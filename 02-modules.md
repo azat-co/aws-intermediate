@@ -1005,6 +1005,79 @@ AWS_REGION=us-west-1
 
 ---
 
+`describe.js`
+
+```js
+// Load the SDK for JavaScript
+const AWS = require('aws-sdk')
+// Load credentials and set region from JSON file
+// AWS.config.loadFromPath('./config.json')
+// Create EC2 service object
+const ec2 = new AWS.EC2({apiVersion: '2016-11-15', region:'us-west-1'})
+```
+
+---
+
+```js
+const params = {
+  // DryRun: true || false,
+  Filters: [
+    {
+      Name: 'endpoint',
+      Values: [
+        'ec2.us-west-1.amazonaws.com',
+        /* more items */
+      ]
+    },
+    /* more items */
+  ],
+  RegionNames: [
+    'us-west-1',
+    /* more items */
+  ]
+}
+```
+
+---
+
+```js
+// Describe region
+ec2.describeRegions(params, function(err, data) {
+   if (err) return console.log('Could not describe regions', err)
+   console.log(data)
+   const imageParams = {
+     Owners: ['amazon'],
+     Filters: [{
+       Name: 'virtualization-type',
+       Values: ['hvm']
+     }, {
+       Name: 'root-device-type',
+       Values: ['ebs']
+     }, {
+       Name: 'name',
+       Values: ['amzn-ami-hvm-2017.03.0.*-x86_64-gp2']
+     }]
+   }
+   ec2.describeImages(imageParams, (err, data)=>{
+     if (err) return console.log('Could not describe regions', err)
+     console.log(data)
+   })
+})
+```
+
+---
+
+
+# How to run it?
+
+```
+cd code/sdk
+node describe.js
+```
+
+---
+
+
 Create and open `provision-infra.js`:
 
 ```js
@@ -1083,6 +1156,26 @@ aws ec2 describe-instances --instance-ids i-0261a29f670faade4
 AWS_DEFAULT_OUTPUT="table" aws ec2 describe-instances --instance-ids i-0261a29f670faade4
 aws ec2 describe-instances --instance-ids i-0261a29f670faade4 \
   --query 'Reservations[0].Instances[0].PublicDnsName'
+```
+
+---
+
+# Feeding Data to Node
+
+```
+node provision-infra.js ./user-data-qa.js
+```
+
+```js
+const userDataFile = process.argv[2]
+//...
+var params = {
+   ImageId: 'ami-7a85a01a', // us-west-1 Amazon Linux AMI 2017.03.0 (HVM), SSD Volume Type
+   InstanceType: 't2.micro',
+   MinCount: 1,
+   MaxCount: 1,
+   UserData: fs.readFileSync(userDataFile, 'base64')
+}
 ```
 
 ---
