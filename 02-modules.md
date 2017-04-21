@@ -606,10 +606,17 @@ aws ec2 describe-images help
 
 ---
 
-## Getting Image ID
+Amazon Linux AMI IDs are differ from region to region
+
+---
+
+## Getting Amazon Linux Image ID
 
 * Web console
 * `describe-images`
+* AWS List (link](https://aws.amazon.com/amazon-linux-ami)
+
+<http://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html>
 
 ---
 
@@ -622,7 +629,7 @@ aws ec2 describe-images --owners amazon \
   "Name=name,Values=amzn-ami-hvm-2016.09.1.20170119-x86_64-gp2"
 ```
 
-Result is to get "ami-165a0876"
+Result is "ami-165a0876"
 
 ---
 
@@ -875,7 +882,10 @@ More info on User Data:
 
 Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, make the HTML page (hello world) visible in the browser *publicly*
 
-Time to finish: 20 min
+Detailed instructions and link are in labs/0-installs.md
+
+
+Time to finish: 15 min 👾
 
 ---
 
@@ -961,17 +971,18 @@ Pick just one
 [default]
 aws_access_key_id = YOUR_ACCESS_KEY_ID
 aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
-aws_region = ...
 ```
+
+(`region` goes into Node file in `new AWS.EC2` call)
 
 ---
 
 # Env variables
 
 ```
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_REGION=
+AWS_ACCESS_KEY_ID=key
+AWS_SECRET_ACCESS_KEY=secret
+AWS_REGION=us-west-1
 ```
 
 ---
@@ -982,7 +993,7 @@ AWS_REGION=
 {
   "accessKeyId": "your-access-key-here",
   "secretAccessKey": "your-secret-key-here",
-  "region": "us-east-1"
+  "region": "us-west-1"
 }
 ```
 
@@ -1008,9 +1019,10 @@ AWS.config.loadFromPath('./config.json')
 ```js
 // Create EC2 service object
 var ec2 = new AWS.EC2({apiVersion: '2016-11-15'})
+//const ec2 = new AWS.EC2({apiVersion: '2016-11-15', region:'us-west-1'})
 const fs = require('fs')
 var params = {
-   ImageId: 'ami-9e247efe', // us-west-1 Amazon Linux AMI 2017.03.0 (HVM), SSD Volume Type
+   ImageId: 'ami-7a85a01a', // us-west-1 Amazon Linux AMI 2017.03.0 (HVM), SSD Volume Type
    InstanceType: 't2.micro',
    MinCount: 1,
    MaxCount: 1,
@@ -1058,6 +1070,7 @@ Example: code/sdk
 Run:
 
 ```
+cd code/sdk
 node provision-infra.js
 Created instance i-0261a29f670faade4
 Tagging instance success
