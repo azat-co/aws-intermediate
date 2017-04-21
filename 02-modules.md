@@ -84,7 +84,30 @@ Refresher from the AWS Intro course. Yell out loud the of cloud computing benefi
 
 ---
 
-# An example of an environment in AWS
+# AWS Well-Architectured Framework
+
+* Build and deploy faster
+* Lower or mitigate risks
+* Make informed decisions
+* Learn AWS best practices
+
+Whitepaper: pdfs/AWS_Well-Architected_Framework.pdf  
+
+---
+
+# Five Pillars
+
+1. Security
+1. Reliability
+1. Performance Efficiency
+1. Cost Optimization
+1. Operational Excellence
+
+[More info](https://aws.amazon.com/architecture/well-architected)
+
+---
+
+# Demo: An example of an environment in AWS
 
 ---
 
@@ -308,7 +331,7 @@ docker --version
 
 * Slides, labs and code  <https://github.com/azat-co/aws-intro>
 * AWS account
-* AWS CLI, (pip/brew/bundle)
+* AWS CLI (pip, brew or bundle)
 * Node and npm
 * Docker engine
 
@@ -482,12 +505,6 @@ Another [IAM JSON file example](https://s3.amazonaws.com/checkr3/CC_IAM_FullPoli
 
 ---
 
-# Documentation on IAM
-
-* [AWS Identity and Access Management](http://docs.aws.amazon.com/IAM/latest/UserGuide/access.html)
-* [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
-
----
 
 List policies for the user to verify:
 
@@ -526,6 +543,12 @@ aws iam create-access-key --user-name MyUser
 
 ---
 
+# Documentation on IAM
+
+* [AWS Identity and Access Management](http://docs.aws.amazon.com/IAM/latest/UserGuide/access.html)
+* [AWS Policy Generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
+
+---
 
 # Connecting Resources and IAM
 
@@ -668,7 +691,9 @@ Note: Need to have security group and subnet first (if you don't have them).
 
 ---
 
-# Working with Security Groups Example
+# Working with Security Groups
+
+---
 
 Create security group:
 
@@ -677,6 +702,9 @@ aws ec2 create-security-group \
   --group-name MySecurityGroup \
   --description "My security group"
 ```
+
+---
+
 
 Add RDP port 3389:
 
@@ -687,9 +715,6 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 ---
-
-# Working with Security Groups Example (cont)
-
 
 Add SSH port 22:
 
