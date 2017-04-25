@@ -1,2 +1,0 @@
-#!/bin/bash
-pm2 start /var/node-app/index.js -i 0 --name "node-app"

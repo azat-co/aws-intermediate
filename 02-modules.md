@@ -1814,6 +1814,8 @@ Elastic Beanstalk: only app management service
 
 Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
 
+Detailed instructions and link are in labs/4-codedeploy.md
+
 Time to finish: 20 min
 
 ---
