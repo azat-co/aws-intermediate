@@ -1,0 +1,65 @@
+{
+    "pipeline": {
+        "roleArn": "your pipeline service role arn",
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "inputArtifacts": [],
+                        "name": "Source",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "ThirdParty",
+                            "version": "1",
+                            "provider": "GitHub"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "MyApp"
+                            }
+                        ],
+                        "configuration": {
+                            "Owner": "your GitHub username or org",
+                            "Repo": "your GitHub repository",
+                            "Branch": "master",
+                            "OAuthToken": "your personal access GitHub OAuthToken"
+                        },
+                        "runOrder": 1
+                    }
+                ]
+            },
+            {
+                "name": "Staging",
+                "actions": [
+                    {
+                        "inputArtifacts": [
+                            {
+                                "name": "MyApp"
+                            }
+                        ],
+                        "name": "NodeCD_DG",
+                        "actionTypeId": {
+                            "category": "Deploy",
+                            "owner": "AWS",
+                            "version": "1",
+                            "provider": "CodeDeploy"
+                        },
+                        "outputArtifacts": [],
+                        "configuration": {
+                            "ApplicationName": "Node_App",
+                            "DeploymentGroupName": "NodeCD_DG"
+                        },
+                        "runOrder": 1
+                    }
+                ]
+            }
+        ],
+        "artifactStore": {
+            "type": "S3",
+            "location": "s3 bucket name"
+        },
+        "name": "node-app-pipeline",
+        "version": 3
+    }
+}
