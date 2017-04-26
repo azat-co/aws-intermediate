@@ -21,7 +21,7 @@ If you would like to attempt the task, go skip the walk-through and for the task
 1. Load/Stress test the instances in the stack
 1. Terminate stack
 
-## 1. Create a CloudFormation blueprint
+## 1. Create a CloudFormation Blueprint
 
 
 Create a CF (CloudFormation) blueprint with autoscaling group or modify the blueprint in code/NodeAutoScalingMultiAZWithNotifications.json. In a nutshell, the provided blueprint uses the following parameters:
@@ -569,7 +569,7 @@ Most importantly, you want to grab the ELB address and testing the Hello World a
 
 You can get the same URL from the Load Balancers view of the EC2 dashboard (or with CLI of course).
 
-## 3. Install load testing tool
+## 3. Install Load Testing Tool
 
 Now, you can install the stress/load testing tool. You can use Apache ab, JMeter, but since we have a Node server, why not use a Node-based tool? You can install and stress test from another EC2 instance, but you can do it locally from your dev machine as well.
 
@@ -630,7 +630,7 @@ Finally, once you stop the load test feel free to wait for the low CPU alarm to 
 
 ![](../images/lab3-alarm-elb.png)
 
-## 5. Terminate stack
+## 5. Terminate Stack
 
 Terminate the stack with CLI or from web console.
 
