@@ -1,10 +1,10 @@
 # Lab 5: Serverless
 
-Servers are fun until they are not. You are running a news agency which has high peaks of traffic but they are happen sporadically (infrequently). It'll be more cost effective to set up a REST API using Lambda to access and perform CRUD on tables in your noSQL DynamoDB database. Lambdas are charged only when they are working unlike EC2 instances which are charged for always as long as they are running. This way with Lambda, your company will pay only for peaks and in other times when there's 0 traffic, it won't be charged at all! Stales news get almost no traffic. 
+Servers are fun until they are not. You are running a news agency which has high peaks of traffic but they are happen sporadically (infrequently). It'll be more cost effective to set up a REST API using Lambda to access and perform CRUD on tables in your noSQL DynamoDB database. Lambdas are charged only when they are working unlike EC2 instances which are charged for always as long as they are running. This way with Lambda, your company will pay only for peaks and in other times when there's 0 traffic, it won't be charged at all! Stales news get almost no traffic.
 
 Also, your last IT Ops person is leaving to work for Google. Company can't hire a replacement. Lambda will require almost no maintenance since they are managed app environment. All the patches, security and scaling is taking care off by the AWS experts!
 
-You'll build a REST API for all the tables not just one. As an example, you'll be using and working with messages but clients can work with any table by sending a different query or payload. Later, you'll be able to create auth and validate request and response in API Gateway (not covered in this lab). You are going to use three services: 
+You'll build a REST API for all the tables not just one. As an example, you'll be using and working with messages but clients can work with any table by sending a different query or payload. Later, you'll be able to create auth and validate request and response in API Gateway (not covered in this lab). You are going to use three services:
 
 * DynamoDB
 * Lambda
@@ -317,9 +317,9 @@ You will need to do the following:
 
 The process is not straightforward. Thus, you can use a shell script which will perform all the steps (recommended) or web console.
 
-The shell script is in the `create-api.sh` file. It has inline commens to help you understand what is happening. Feel free to inspect it.
+The shell script is in the `create-api.sh` file. It has inline comments to help you understand what is happening. Feel free to inspect `create-api.sh`. For brevity and to avoid clutter, the file is not copied into this document.
 
-Run this command to create the API endpoint and integrate it with Lambda function:
+Run this command to create the API endpoint and integrate it with Lambda function (if you modified region or function name, you'll need to change those values in script as well):
 
 ```
 sh create-api.sh
@@ -405,7 +405,7 @@ Here's an option if you don't want to copy paste your endpoint URL. Use env var 
 ```sh
 APINAME=api-for-db-api
 REGION=us-west-1
-NAME=db-api 
+NAME=db-api
 APIID=$(aws apigateway get-rest-apis --query "items[?name==\`${APINAME}\`].id" --output text --region ${REGION})
 API_URL="https://${APIID}.execute-api.${REGION}.amazonaws.com/prod/db-api/?TableName=messages"
 ```
