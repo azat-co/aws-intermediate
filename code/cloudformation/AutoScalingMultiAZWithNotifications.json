@@ -221,8 +221,8 @@
       "UpdatePolicy": {
         "AutoScalingRollingUpdate": {
           "MinInstancesInService": "1",
-          "MaxBatchSize": "1",
-          "PauseTime" : "PT15M",
+          "MaxBatchSize": "3",
+          "PauseTime" : "PT1M",
           "WaitOnResourceSignals": "true"
         }
       }
@@ -244,7 +244,9 @@
               "/var/www/html/index.html" : {
                 "content" : { "Fn::Join" : ["\n", [
                   "<img src=\"", {"Fn::FindInMap" : ["Region2Examples", {"Ref" : "AWS::Region"}, "Examples"]}, "/cloudformation_graphic.png\" alt=\"AWS CloudFormation Logo\"/>",
-                  "<h1>Congratulations, you have successfully launched the AWS CloudFormation sample.</h1>"
+                  "<br/>",
+                  "<img src=\"https://process.filestackapi.com/ADNupMnWyR7kCWRvm76Laz/resize=height:60/https://www.filepicker.io/api/file/WYqKiG0xQQ65DBnss8nD\" alt=\"Node University Logo\"/>",
+                  "<h1>Congratulations, you have successfully launched the AWS CloudFormation AutoScaling sample. Now load test it and see the alerts and an increase in instances. 🚀</h1>"
                 ]]},
                 "mode"    : "000644",
                 "owner"   : "root",
@@ -331,13 +333,13 @@
     "CPUAlarmHigh": {
      "Type": "AWS::CloudWatch::Alarm",
      "Properties": {
-        "AlarmDescription": "Scale-up if CPU > 90% for 10 minutes",
+        "AlarmDescription": "Scale-up if CPU > 50% for 10 minutes",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/EC2",
         "Statistic": "Average",
-        "Period": "300",
-        "EvaluationPeriods": "2",
-        "Threshold": "90",
+        "Period": "60",
+        "EvaluationPeriods": "1",
+        "Threshold": "50",
         "AlarmActions": [ { "Ref": "WebServerScaleUpPolicy" } ],
         "Dimensions": [
           {
@@ -351,13 +353,13 @@
     "CPUAlarmLow": {
      "Type": "AWS::CloudWatch::Alarm",
      "Properties": {
-        "AlarmDescription": "Scale-down if CPU < 70% for 10 minutes",
+        "AlarmDescription": "Scale-down if CPU < 25% for 10 minutes",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/EC2",
         "Statistic": "Average",
-        "Period": "300",
-        "EvaluationPeriods": "2",
-        "Threshold": "70",
+        "Period": "60",
+        "EvaluationPeriods": "1",
+        "Threshold": "25",
         "AlarmActions": [ { "Ref": "WebServerScaleDownPolicy" } ],
         "Dimensions": [
           {

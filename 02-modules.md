@@ -1353,7 +1353,7 @@ CloudFormation Example: S3 Bucket with Static Website
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
-        "KeyName" : "azat-key",
+        "KeyName" : "azat-aws-course",
         "ImageId" : "ami-9e247efe"
       }
     },
@@ -1386,7 +1386,7 @@ See [reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/in
 
 ---
 
-## `azat-key` must exist before running this template
+## `azat-aws-course` must exist before running this template
 
 ```
 "Resources" : {
@@ -1394,7 +1394,7 @@ See [reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/in
     "Type" : "AWS::EC2::Instance",
     "Properties" : {
       "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
-      "KeyName" : "azat-key",
+      "KeyName" : "azat-aws-course",
       "ImageId" : "ami-9e247efe"
     }
   },
@@ -1404,7 +1404,7 @@ See [reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/in
 ---
 
 
-## `azat-key` must exist before running this template... can we provide it later? Yes, it's a template!
+## `azat-aws-course` must exist before running this template... can we provide it later? Yes, it's a template!
 
 ---
 
@@ -1468,7 +1468,7 @@ See [reference](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/in
 ```
 aws cloudformation create-stack --stack-name myteststack \
   --template-body file:////home//local//test//sampletemplate.json \
-  --parameters ParameterKey=KeyNameParam,ParameterValue=azat-key \
+  --parameters ParameterKey=KeyNameParam,ParameterValue=azat-aws-course \
   ParameterKey=SubnetIDs,ParameterValue=SubnetID1\\,SubnetID2
 ```
 
@@ -1585,7 +1585,7 @@ Find AMI ID based on region using mappings:
 ```
 aws cloudformation create-stack --stack-name myteststack \
   --template-body file:////home//local//test//sampletemplate.json \
-  --parameters ParameterKey=KeyNameParam,ParameterValue=azat-key
+  --parameters ParameterKey=KeyNameParam,ParameterValue=azat-aws-course
 ```
 
 ---
@@ -1599,11 +1599,13 @@ aws cloudformation create-stack --stack-name myteststack \
 ---
 
 
-# Lab 3: Everything is easier with CloudFormation
+# Lab 3: Form the Cloud ☁️
 
-Task: Create a ELB and auto scaling environment from CloudFormation template/blueprint
+Task: Create an ELB, security group and auto scaling environment from CloudFormation template/blueprint; load/stress test it to see auto increase
 
-code/AutoScalingMultiAZWithNotifications.json or [link to file](https://s3-us-west-2.amazonaws.com/cloudformation-templates-us-west-2/AutoScalingMultiAZWithNotifications.template) and to [designer](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w1ab2c21c45c15b9)
+You can use blueprint from code/cloudformation/AutoScalingMultiAZWithNotifications.json or one from [AWS](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sample-templates-services-us-west-2.html#w1ab2c21c45c15b9)
+
+Detailed instructions and link are in labs/03-form-the-cloud.md
 
 Time to finish: 20min
 
