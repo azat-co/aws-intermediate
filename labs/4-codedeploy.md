@@ -83,7 +83,7 @@ aws cloudformation wait stack-create-complete --stack-name NodeAppCodeDeployStac
 
 There are two thing needed: trust policy and managed policy.
 
-  Before you create CodeDeploy, it needs IAM role with a special policy. This special policy can be provided in a JSON format (e.g., `codedeploy-role-trust-policy.json`):
+Before you create CodeDeploy, it needs IAM role with a special policy. This special policy can be provided in a JSON format (e.g., `codedeploy-role-trust-policy.json`):
 
 ```js
 {
