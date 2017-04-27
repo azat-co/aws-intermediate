@@ -2042,7 +2042,46 @@ Configure cluster
 
 ---
 
+# Benefits of AWS Lambda
+
+* No Servers to Manage
+* Continuous Scaling
+* Subsecond Metering
+
+---
+
+![inline](images/Lambda_HowItWorks.png)
+
+---
+
+# Use cases
+
+* REST API and mobile backend
+* IoT backend (Kinesis)
+* Data ETL (Redshift, S3)
+* Real-time file and stream processing
+* Web applications (S3)
+
+---
+
+![inline](images/Lambda_WebApplications.png)
+
+---
+
+
 # Demo: Building Microservice with Lambda and API Gateway
+
+---
+
+[.footer:hide]
+
+![fit](images/serverless-web-console-1.gif)
+
+---
+
+[.footer:hide]
+
+![fit](images/serverless-web-console-2.gif)
 
 ---
 

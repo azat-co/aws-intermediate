@@ -454,7 +454,7 @@ To delete an item with DELETE HTTP request method, the payload must have a `Key`
 
 Congratulations! You've build an event-driven REST API for entire database not just a single table!
 
-Note: For auth, you can set up token-based auth on a resource and method in API Gateway. You can set up response and request rules in the API Gateway as well. Also, everything (API Gateway, Lambda and DynamoDB) can be set up in CloudFormation instead of a CLI or web console.
+Note: For auth, you can set up token-based auth on a resource and method in API Gateway. You can set up response and request rules in the API Gateway as well. Also, everything (API Gateway, Lambda and DynamoDB) can be set up in CloudFormation instead of a CLI or web console ([example of Lambda with CloudFormation](https://github.com/awslabs/lambda-refarch-webapp/)).
 
 ## 6. Clean up
 
