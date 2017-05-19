@@ -32,7 +32,7 @@ We will be using config.json in this tutorial.
 
 Create a user data shell script which will install Node v6 on the EC2 instance, copy the Hello World code to the EC2 instance and start the HTTP web server *right after the launch*.
 
-You might use this code as an inspiration:
+You might use this code as an inspiration (code/sdk/user-data.sh):
 
 ```
 #!/bin/bash -ex
@@ -56,7 +56,7 @@ sudo pm2 start /home/ec2-user/hello-world-server.js -i 0 --name "node-app"
 ```
 
 
-The code above is pulling source code for the HTTP web server from GitHub's gist (azat-co profile). If you are curious, here's the Node server code:
+The code above is pulling source code for the HTTP web server from GitHub's gist (azat-co profile). If you are curious, here's the Node server code (code/sdk/hello-world-server-port.js):
 
 ```js
 const port = process.env.PORT || 3000
@@ -86,16 +86,16 @@ sudo PORT=80 node hello-world-server-port.js
 
 You can use Node as a scripting language to automate any AWS tasks. You can add parameters to your scripts to make them flexible (region, instance type, source code, etc.).
 
-For this lab, your goal is to launch an instance with automatic environment and app setup in user data. Feel free to add more to this example (security group, key pair, etc.). List of the Node SDK API is [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/EC2.html). It closely follows and mimics the AWS CLI commands.
+For this lab, your goal is to launch an instance with automatic environment and app setup in user data. Feel free to add more to this example (security group, key pair, etc.). List of the Node SDK API is [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/EC2.html). It closely follows and mimics the AWS CLI commands. My example is this (code/sdk/provision-infra.js)
 
 ```js
 // Load the SDK for JavaScript
 const AWS = require('aws-sdk')
 // Load credentials and set region from JSON file
-AWS.config.loadFromPath('./config.json')
+// AWS.config.loadFromPath('./config.json')
 
 // Create EC2 service object
-var ec2 = new AWS.EC2({apiVersion: '2016-11-15'})
+var ec2 = new AWS.EC2({apiVersion: '2016-11-15', region: 'us-west-1'})
 const fs = require('fs')
 var params = {
    ImageId: 'ami-9e247efe', // us-west-1 Amazon Linux AMI 2017.03.0 (HVM), SSD Volume Type
@@ -126,12 +126,16 @@ ec2.runInstances(params, function(err, data) {
 })
 ```
 
+
 Imagine a scenario in which you can pass a link to the source code separately from the user data. In other words, our Node and user data scripts can be used without modifications for future deployments of the new versions of the app Node Hello World... or a fully-functional REST API? It's up to you. The EC2 environment is good for production. :-)
 
 
 ## 4. Launch EC2
 
+The way you launch a Node script is with the `node {filename.js}` command. For example,
+
 ```
+cd code/sdk
 node provision-infra.js
 ```
 
