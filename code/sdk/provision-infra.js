@@ -12,7 +12,7 @@ var params = {
   MinCount: 1,
   MaxCount: 1,
   UserData: fs.readFileSync('./user-data.sh', 'base64'),
-  GroupIds: ['SECURITY_GROUP_ID']
+  SecurityGroups: ['http-sg']
 }
 
 // Create the instance
