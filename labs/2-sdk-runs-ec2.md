@@ -20,11 +20,13 @@ If you would like to attempt the task, then skip the walk-through and go for the
 
 ## 1. Set up your credentials
 
-Pick your way to set up credentials:
+Pick your way to set up credentials (access ID and secret key) as described in the lecture:
 
 * home directory file
 * config.json
 * Node code
+
+We will be using config.json in this tutorial.
 
 ## 2. Create user data
 
