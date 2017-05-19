@@ -13,7 +13,7 @@ If you would like to attempt the task, then skip the walk-through and go for the
 Check for Python. Make sure you have 2.6+ or 3.6+. You can use pip (Python package manager) to install AWS CLI.
 
 ```bash
-phyton --version
+phython --version
 pip --version
 pip install awscli
 ```
