@@ -594,7 +594,6 @@ aws ec2 describe-instances help
 aws ec2 run-instances help
 awc ec2 create-images help
 aws ec2 describe-images help
-
 ```
 
 ---
@@ -614,9 +613,7 @@ Amazon Linux AMI IDs are differ from region to region
 
 * Web console
 * `describe-images`
-* AWS List (link](https://aws.amazon.com/amazon-linux-ami)
-
-<http://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html>
+* [AWS List](https://aws.amazon.com/amazon-linux-ami)
 
 ---
 
@@ -630,6 +627,8 @@ aws ec2 describe-images --owners amazon \
 ```
 
 Result is "ami-165a0876"
+
+Docs: <http://docs.aws.amazon.com/cli/latest/reference/ec2/describe-images.html>
 
 ---
 
@@ -840,13 +839,6 @@ chmod 2775 /var/www
 find /var/www -type d -exec chmod 2775 {} +
 find /var/www -type f -exec chmod 0664 {} +
 echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
-```
-
----
-
-# HTML Hello world
-
-```
 echo "<?php echo 'Hello World!' ?>" > /var/www/html/index.php
 ```
 
@@ -882,7 +874,7 @@ More info on User Data:
 
 Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, make the HTML page (hello world) visible in the browser *publicly*
 
-Detailed instructions and link are in labs/0-installs.md
+Detailed instructions and link are in labs/1-hello-world-aws-cli.md
 
 
 Time to finish: 15 min 👾
@@ -1188,6 +1180,8 @@ var params = {
 # Lab 2: Node SDK Runs EC2
 
 Task: Write a Node script to create an instance with Node hello world (use User Data), and run it. Make sure you see the Hello World via public DNS.
+
+Detailed instructions and link are in labs/02-sdk-runs-ec2.md
 
 Time to finish: 10 min
 
