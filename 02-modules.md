@@ -329,7 +329,7 @@ docker --version
 
 # Lab 0: Installs or Flight Checklist
 
-* Slides, labs and code  <https://github.com/azat-co/aws-intro>
+* Slides, labs and code  <https://github.com/azat-co/aws-intermediate>
 * AWS account
 * AWS CLI (pip, brew or bundle)
 * Node and npm
