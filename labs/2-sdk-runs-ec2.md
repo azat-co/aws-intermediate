@@ -86,6 +86,20 @@ sudo PORT=80 node hello-world-server-port.js
 
 You can use Node as a scripting language to automate any AWS tasks. You can add parameters to your scripts to make them flexible (region, instance type, source code, etc.).
 
+Create a project manifest file by running in a brand new folder:
+
+```
+mkdir provision-infra
+cd provision-infra
+npm init -y
+```
+
+Install AWS Node/JavaScript SKD:
+
+```
+npm i -SE aws-sdk
+```
+
 For this lab, your goal is to launch an instance with automatic environment and app setup in user data. Feel free to add more to this example (security group, key pair, etc.). List of the Node SDK API is [here](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/EC2.html). It closely follows and mimics the AWS CLI commands. My example is this (code/sdk/provision-infra.js)
 
 ```js
