@@ -138,13 +138,13 @@ Your output will looks similar to this *except* for the Arn:
 }
 ```
 
-For the managed policy, use [attach-role-policy](http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html) with your newly created role name and policy Arn (such as AWSCodeDeployRole):
+For the managed policy, use the  [attach-role-policy](http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html) command with your newly created role name (e.g., `CodeDeployServiceRole`) and the policy Arn (i.e., `arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole` - **do NOT change Arn**):
 
 ```
 aws iam attach-role-policy --role-name CodeDeployServiceRole --policy-arn arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
 ```
 
-Verify:
+The verify right away:
 
 ```
 aws iam get-role --role-name CodeDeployServiceRole
@@ -186,7 +186,7 @@ More info: <http://docs.aws.amazon.com/cli/latest/reference/deploy/create-applic
 
 ### 3.3. Create CodeDeploy deployment group
 
-Finally for CodeDeploy, create a deployment group which uses application name and instance tags. In other words, deployment group will link application and instance(s) (which we created with CloudFormation). Instead of my Arn, insert yours from the CodeDeploy role. (Hint, that's your AWS account ID in the IAM Arn. More details [here](http://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-iam))
+Finally for CodeDeploy, create a deployment group which uses application name and instance tags. In other words, deployment group will link application and instance(s) (which we created with CloudFormation). **Instead of my service role Arn, insert yours from the CodeDeploy service role in step 3.1.** (Hint, those digits in the IAM Arn is your AWS account ID. More details [here](http://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-iam))
 
 ```
 aws deploy create-deployment-group --application-name Node_App \
@@ -207,7 +207,7 @@ Your result will have a deploymentGroupId as well:
 ```
 
 
-More info: <http://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create.html:
+More info: <http://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create.html>
 
 ## 4. Create App Repo
 
@@ -478,7 +478,7 @@ Here's my example of the CodePipeline structure which is also in the `node-app-p
 
 The structure has two stages: source and deploy. You can keep adding more stages later like testing or build. See [this](http://docs.aws.amazon.com/codepipeline/latest/userguide/reference-pipeline-structure.html) for more info on pipeline structure.
 
-You should at the very least you must replace the following because create-pipeline CLI won't create them for you. So you need to have CodePipeline service IAM role and the S3 bucket created first.
+**IMPORTANT:** You should at the very least replace the following because create-pipeline CLI won't create them for you. So you need to have CodePipeline service IAM role and the S3 bucket created first.
 
 * `artifactStore`, S3 bucket name for the bucket in the same region, e.g., my value is `codepipeline-us-west-2-346128301595`
 * `roleArn`, the IAM role which has the inline policies for the CodePipeline, e.g., `arn:aws:iam::161599702702:role/CodePipelineServiceRole`
