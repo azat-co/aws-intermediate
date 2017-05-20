@@ -1,6 +1,6 @@
 {
     "pipeline": {
-        "roleArn": "arn:aws:iam::161599702702:role/CodePipelineServiceRole",
+        "roleArn": "your pipeline service role arn",
         "stages": [
             {
                 "name": "Source",
@@ -20,10 +20,10 @@
                             }
                         ],
                         "configuration": {
-                            "Owner": "azat-co",
-                            "Repo": "codedeploy-codepipeline-node",
+                            "Owner": "your GitHub username or org",
+                            "Repo": "your GitHub repository",
                             "Branch": "master",
-                            "OAuthToken": "3e10e5cecd63a363f5ef7aebf64b08e30881e294"
+                            "OAuthToken": "your personal access GitHub OAuthToken"
                         },
                         "runOrder": 1
                     }
@@ -57,7 +57,7 @@
         ],
         "artifactStore": {
             "type": "S3",
-            "location": "node-app-pipeline-bucket-346128301596"
+            "location": "s3 bucket name"
         },
         "name": "node-app-pipeline",
         "version": 3
