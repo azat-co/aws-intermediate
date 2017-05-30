@@ -17,8 +17,8 @@ Azat Mardan @azat_co
 # Meet Your Instructor
 
 * Name: Azat Mardan
-* Author 14 books and over 12 online courses, taught over 500 engineers in-person and over 25,000 online (Udemy and Node University)
-* Work as Capital One Technology Fellow (modeled after IBM and Google Fellows)
+* Author of 14 books and over 12 online courses, taught over 500 engineers in-person and over 25,000 online (Udemy and Node University)
+* Works as Capital One Technology Fellow (modeled after IBM and Google Fellows)
 
 ---
 
@@ -40,16 +40,16 @@ Azat Mardan @azat_co
 
 * Gizmo: small startup, used Rackspace
 * Storify: small startup, used Joyent and AWS
-* DocuSign: not used cloud 😞
+* DocuSign: didn't use cloud 😞
 * Capital One: cloud everywhere
 
 ---
 
-# Introduce your self by raising hand ✋
+# Introduce yourself by raising your hand ✋
 
-* How many year in technology, 1, 2, 4, 8, 16?
+* How many years in technology, 1, 2, 4, 8, 16?
 * Your main language, Java, Python, Ruby, C, JavaScript, COBOL?
-* What is your expectation so you are 100% satisfied by this course at 5pm?
+* What is your expectation so that you are 100% satisfied by this course at 5pm?
 
 ---
 
@@ -65,9 +65,9 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 * Lectures, demos and hands-on labs - you'll download them soon
 * Lunch break 12-1pm and 2 smaller breaks before and after
-* Fill out sign up sheets and DI evaluation *before* you leave (put in the envelope)
+* Fill out sign up sheets and the DI evaluation *before* you leave (put them in the envelope)
 * Slides are often just talking points because reading from slides is boring so pay attention and take notes!
-* Labs have detailed step by step walk-through
+* Labs have detailed step by step walk-throughs
 
 ---
 
@@ -106,7 +106,7 @@ Multitasking does NOT work (for work which requires focus)[^1]
 * CloudFormation structure
 * Demo: CloudFormation example and AWS CLI
 * Demo: CloudFormation visual web editor
-* Lab 3: Create a ELB and auto scaling environment from CloudFormation template/blueprint
+* Lab 3: Create an ELB and auto scaling environment from CloudFormation template/blueprint
 
 ---
 
