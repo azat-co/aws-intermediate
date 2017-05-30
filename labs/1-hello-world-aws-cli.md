@@ -2,7 +2,7 @@
 
 # Task
 
-Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, make the HTML page (hello world) visible in the browser *publicly*.
+Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, and then make the HTML page (hello world) visible in the browser *publicly*.
 
 
 # Walk-through
@@ -16,7 +16,7 @@ If you would like to attempt the task, then skip the walk-through and go for the
 5. Launch instances
 6. Get public IP and test
 
-All commands has been designed for us-west-1. If you are using a different region, you need to modify accordingly. For example, your AMI ID will be different.
+All commands have been designed for us-west-1. If you are using a different region, you need to modify accordingly. For example, your AMI ID will be different.
 
 And yes, please do NOT use the AWS web console. You may logout from there now.
 
@@ -51,7 +51,7 @@ echo "<html>
 </html>" > /var/www/html/index.html
 ```
 
-Feel free to be creative and edit HTML code. For example,
+Feel free to be creative and edit the HTML code. For example,
 
 ```
 echo "<html>
@@ -70,7 +70,7 @@ The next step will ensure you (and other people who want to see your page) can a
 
 Make sure there's no SSH access to the instance (the principle of lease needed privileges, see security pillar in AWS Well-Architectured Framework). Do not use AWS web console. Use only AWS CLI tool.
 
-Here some of the commands. Create a security group:
+Here are some of the commands. Create a security group:
 
 ```
 aws ec2 create-security-group --group-name \
@@ -112,7 +112,7 @@ For example, here's [a Marketplace search result for Amazon Linux AMIs](https://
 
 ## 5. Launch instances
 
-Navigate to the folder in which you have user data saved in file (e.g., httpd-hello-user-data.sh). Now you can launch an instance (or two) using user data and security group you created. The user data will be fed from a file using `file://` syntax. You can fetch user data from internet using http as well.
+Navigate to the folder in which you have user data saved in file (e.g., httpd-hello-user-data.sh). Now you can launch an instance (or two) using user data and the security group you created. The user data will be fed from a file using `file://` syntax. You can fetch user data from the internet using http as well.
 
 ```
 aws ec2 run-instances --image-id ami-7a85a01a \
@@ -127,14 +127,14 @@ Write down (or copy) the instance ID which will have the following format (your 
 aws ec2 describe-instances --instance-ids i-0ca91f9842b88d206
 ```
 
-If you have just a single (or only a few) instances, then you can run `aws ec2 describe-instances` without IDs. 
+If you only have a single (or only a few) instance(s), then you can run `aws ec2 describe-instances` without IDs. 
 If you have many instances, provide the ID which you saved (you did save it, right?) from `run-instances`:
 
 ```
 aws ec2 describe-instances --instance-ids i-0ca91f9842b88d206
 ```
 
-Copy the PublicDnsName. If you don't see it, make sure status is 16: running. Also, double check the security group.
+Copy the PublicDnsName. If you don't see it, make sure the status is 16: running. Also, double check the security group.
 
 ## 6. Get public IP and test
 
