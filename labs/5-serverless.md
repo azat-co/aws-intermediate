@@ -1,8 +1,8 @@
 # Lab 5: Serverless
 
-Servers are fun until they are not. You are running a news agency which has high peaks of traffic but they are happen sporadically (infrequently). It'll be more cost effective to set up a REST API using Lambda to access and perform CRUD on tables in your noSQL DynamoDB database. Lambdas are charged only when they are working unlike EC2 instances which are charged for always as long as they are running. This way with Lambda, your company will pay only for peaks and in other times when there's 0 traffic, it won't be charged at all! Stales news get almost no traffic.
+Servers are fun until they are not. You are running a news agency which has high peaks of traffic but they happen sporadically (infrequently). It'll be more cost effective to set up a REST API using Lambda to access and perform CRUD on tables in your noSQL DynamoDB database. Lambdas are charged only when they are working unlike EC2 instances which are charged for always, as long as they are running. This way with Lambda, your company will pay only for peaks and in other times when there's 0 traffic, it won't be charged at all! Stales news get almost no traffic.
 
-Also, your last IT Ops person is leaving to work for Google. Company can't hire a replacement. Lambda will require almost no maintenance since they are managed app environment. All the patches, security and scaling is taking care off by the AWS experts!
+Also, your last IT Ops person is leaving to work for Google. Company can't hire a replacement. Lambda will require almost no maintenance since they are managed app environment. All the patches, security and scaling is taken cared off by AWS experts!
 
 You'll build a REST API for all the tables not just one. As an example, you'll be using and working with messages but clients can work with any table by sending a different query or payload. Later, you'll be able to create auth and validate request and response in API Gateway (not covered in this lab). You are going to use three services:
 
@@ -233,7 +233,7 @@ aws lambda create-function --function-name db-api \
   --timeout 10
 ```
 
-Memory size and timout are optional. By default, they are 128 and 3 correspondigly.
+Memory size and timout are optional. By default, they are 128 and 3 correspondingly.
 
 Results will look similar to this but with different IDs of course:
 
@@ -275,11 +275,11 @@ aws lambda invoke \
 output.txt
 ```
 
-Or testing can be done in from the web console in Lambda dashboard (blue test button once you navigate to function detailed view):
+Or testing can be done from the web console in Lambda dashboard (blue test button once you navigate to function detailed view):
 
 ![](../images/serverless-1.png)
 
-The results should be 200 (ok status) and output in the `output.txt` file. For example, I do NOT have any records yet so my response is this:
+The results should be 200 (ok status) and output in the `output.txt` file. For example, I do NOT have any record yet so my response is this:
 
 ```
 {"statusCode":"200","body":"{\"Items\":[],\"Count\":0,\"ScannedCount\":0}","headers":{"Content-Type":"application/json"}}
@@ -319,13 +319,13 @@ The process is not straightforward. Thus, you can use a shell script which will 
 
 The shell script is in the `create-api.sh` file. It has inline comments to help you understand what is happening. Feel free to inspect `create-api.sh`. For brevity and to avoid clutter, the file is not copied into this document.
 
-Run this command to create the API endpoint and integrate it with Lambda function (if you modified region or function name, you'll need to change those values in script as well):
+Run this command to create the API endpoint and integrate it with Lambda function (if you modified the region or the function name, you'll need to change those values in script as well):
 
 ```
 sh create-api.sh
 ```
 
-In the end, script will make a GET request to check that everything is working. This is an example of running the automation script for the API Gateway (yours IDs and Arns will be different):
+In the end, script will make a GET request to check that everything is working. This is an example of running the automation script for the API Gateway (your IDs and Arns will be different):
 
 ```sh
 sh create-api.sh
@@ -385,7 +385,7 @@ You can then manually run tests by getting resource URL and using cURL, Postman 
 curl "https://sdzbvm11w6.execute-api.us-west-1.amazonaws.com/prod/db-api/?TableName=messages"
 ```
 
-But my POST has body and header with an unique ID:
+But my POST has a body and header with a unique ID:
 
 ```sh
 curl "https://sdzbvm11w6.execute-api.us-west-1.amazonaws.com/prod/db-api/?TableName=messages" \
@@ -431,7 +431,7 @@ curl ${API_URL} \
   }'
 ```
 
-The new items can be observed via HTTP interface by making another GET requests... or in web console in DynamoDB dashboard as shown below:
+The new items can be observed via HTTP interface by making another GET request... or in web console in DynamoDB dashboard as shown below:
 
 ![](../images/serverless-db.png)
 
@@ -452,13 +452,13 @@ To delete an item with DELETE HTTP request method, the payload must have a `Key`
 }
 ```
 
-Congratulations! You've build an event-driven REST API for entire database not just a single table!
+Congratulations! You've built an event-driven REST API for an entire database not just a single table!
 
 Note: For auth, you can set up token-based auth on a resource and method in API Gateway. You can set up response and request rules in the API Gateway as well. Also, everything (API Gateway, Lambda and DynamoDB) can be set up in CloudFormation instead of a CLI or web console ([example of Lambda with CloudFormation](https://github.com/awslabs/lambda-refarch-webapp/)).
 
 ## 6. Clean up
 
-Remove API Gateway API with `delete-rest-api`. For example here's my command, for yours replace REST API ID accordingly:
+Remove API Gateway API with `delete-rest-api`. For example here's my command (for yours replace REST API ID accordingly):
 
 ```sh
 aws apigateway delete-rest-api --rest-api-id sdzbvm11w6
