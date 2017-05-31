@@ -4,7 +4,7 @@ Autoscaling group is one of the pillars of the AWS well-architectured frameworkâ
 
 If you've ever tried to set up an autoscaling group in the AWS web console (one of the labs in [the AWS Intro course](https://github.com/azat-co/aws-intro)), that's a boatload of clicks. With every manual click, anything can go wrong.
 
-Let's eliminate manual work and reduce any chance of mistakes by using Cloud Formation to launch an autoscaling group with an HTTP servers.
+Let's eliminate manual work and reduce any chance of mistakes by using Cloud Formation to launch an autoscaling group with an HTTP server.
 
 # Task
 
@@ -48,7 +48,7 @@ The provided `NodeAutoScalingMultiAZWithNotifications.json` blueprint creates th
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "AWS CloudFormation Sample Template AutoScalingMultiAZWithNotifications: Create a multi-az, load balanced and Auto Scaled sample web site running on an Apache Web Serever. The application is configured to span all Availability Zones in the region and is Auto-Scaled based on the CPU utilization of the web servers. Notifications will be sent to the operator email address on scaling events. The instances are load balanced with a simple health check against the default web page. **WARNING** This template creates one or more Amazon EC2 instances and an Elastic Load Balancer. You will be billed for the AWS resources used if you create a stack from this template.",
+  "Description" : "AWS CloudFormation Sample Template AutoScalingMultiAZWithNotifications: Create a multi-az, load balanced and Auto Scaled sample web site running on an Apache Web Server. The application is configured to span all Availability Zones in the region and is Auto-Scaled based on the CPU utilization of the web servers. Notifications will be sent to the operator email address on scaling events. The instances are load balanced with a simple health check against the default web page. **WARNING** This template creates one or more Amazon EC2 instances and an Elastic Load Balancer. You will be billed for the AWS resources used if you create a stack from this template.",
 
   "Parameters" : {
     "InstanceType" : {
@@ -61,7 +61,7 @@ The provided `NodeAutoScalingMultiAZWithNotifications.json` blueprint creates th
     },
 
     "OperatorEMail": {
-      "Description": "EMail address to notify if there are any scaling operations",
+      "Description": "Email address to notify if there are any scaling operations",
       "Type": "String",
       "AllowedPattern": "([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)",
       "ConstraintDescription": "must be a valid email address."
@@ -511,7 +511,7 @@ Here's the example of the JSON output:
         {
             "StackId": "arn:aws:cloudformation:us-west-1:161599702702:stack/myteststack/db401e20-26c3-11e7-a874-50a686e19fe6",
             "DeletionTime": "2017-04-21T18:53:51.965Z",
-            "TemplateDescription": "AWS CloudFormation Sample Template AutoScalingMultiAZWithNotifications: Create a multi-az, load balanced and Auto Scaled sample web site running on an Apache Web Serever. The application is configured to span all Availability Zones in the region and is Auto-Scaled based on the CPU utilization of the web servers. Notifications will be sent to the operator email address on scaling events. The instances are load balanced with a simple health check against the default web page. **WARNING** This template creates one or more Amazon EC2 instances and an Elastic Load Balancer. You will be billed for the AWS resources used if you create a stack from this template.",
+            "TemplateDescription": "AWS CloudFormation Sample Template AutoScalingMultiAZWithNotifications: Create a multi-az, load balanced and Auto Scaled sample web site running on an Apache Web Server. The application is configured to span all Availability Zones in the region and is Auto-Scaled based on the CPU utilization of the web servers. Notifications will be sent to the operator email address on scaling events. The instances are load balanced with a simple health check against the default web page. **WARNING** This template creates one or more Amazon EC2 instances and an Elastic Load Balancer. You will be billed for the AWS resources used if you create a stack from this template.",
             "CreationTime": "2017-04-21T18:53:49.745Z",
             "StackName": "myteststack",
             "StackStatus": "ROLLBACK_COMPLETE"
