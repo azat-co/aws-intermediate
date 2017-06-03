@@ -17,7 +17,7 @@ Azat Mardan @azat_co
 
 ## Why cloud?
 
-Refresher from the AWS Intro course. Yell out loud the of cloud computing benefits! 🔊
+Refresher from the AWS Intro course. Yell out loud the cloud computing benefits! 🔊
 
 ---
 
@@ -148,7 +148,7 @@ IT Ops -> Repo -> CI Server: Build images and validate templates (CloudFormation
 
 # Continuous Delivery (CD)
 
-CI/CD pipeline is automation of CIs. Could include stress testing and performance testing.
+CI/CD pipeline is an automation of CIs. Could include stress testing and performance testing.
 
 Not the same as Continuous Deployment (delivery has manual prod deploy).
 
@@ -231,7 +231,7 @@ curl  https://codeload.github.com/azat-co/aws-intermediate/zip/master | tar -xv
 
 ---
 
-# Who has AWS account access? 🙋
+# Who has an AWS account access? 🙋
 
 ---
 
@@ -286,7 +286,7 @@ I develop natively on my dev machine, but you can use another EC2 instance
 * [Git](https://git-scm.com) mostly for code deploys and Elastic Beanstalk
 * Code editor [Atom](https://atom.io) or [VS code](https://code.visualstudio.com)
 * [CURL](https://curl.haxx.se/download.html) and [PuTTY](http://www.putty.org) (for Windows)
-* [Docker](https://www.docker.com) deamon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
+* [Docker](https://www.docker.com) daemon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
 
 ---
 
@@ -335,7 +335,7 @@ docker --version
 * Node and npm
 * Docker engine
 
-Detailed instructions and link are in labs/0-installs.md
+Detailed instructions and links are in labs/0-installs.md
 
 Time: 15 minutes to download and install, go! 🚀
 
@@ -366,7 +366,7 @@ Time: 15 minutes to download and install, go! 🚀
 
 # Note
 
-`\` in a CLI command means a new line - optional and purely for formatting and larger font. `\` works the sames in bash/zsh.
+`\` in a CLI command, means a new line - optional and purely for formatting and larger font. `\` works the same in bash/zsh.
 
 
 Bad font:
@@ -471,7 +471,7 @@ Create user:
 aws iam create-user --user-name MyUser
 ```
 
-Attache policy from a file:
+Attach policy from a file:
 
 ```
 aws iam put-user-policy --user-name MyUser --policy-name MyPowerUserRole --policy-document file://C:\Temp\MyPolicyFile.json
@@ -605,7 +605,7 @@ aws ec2 describe-images help
 
 ---
 
-Amazon Linux AMI IDs are differ from region to region
+Amazon Linux AMI IDs differ from region to region
 
 ---
 
@@ -678,7 +678,7 @@ aws ec2 run-instances --image-id ami-xxxxxxxx \
   --key-name MyKeyPair --security-groups my-sg
 ```
 
-Note: Need to have security group first (if you don't have it).
+Note: You need to have security group first (if you don't have it).
 
 ---
 
@@ -692,7 +692,7 @@ aws ec2 run-instances --image-id ami-{xxxxxxxx} \
   --security-group-ids sg-{xxxxxxxx} --subnet-id subnet-{xxxxxxxx}
 ```
 
-Note: Need to have security group and subnet first (if you don't have them).
+Note: You need to have security group and subnet first (if you don't have them).
 
 
 ---
@@ -872,9 +872,9 @@ More info on User Data:
 
 # Lab 1: Power to AWS CLI
 
-Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, make the HTML page (hello world) visible in the browser *publicly*
+Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, and then make the HTML page (hello world) visible in the browser *publicly*
 
-Detailed instructions and link are in labs/1-hello-world-aws-cli.md
+Detailed instructions and links are in labs/1-hello-world-aws-cli.md
 
 
 Time to finish: 15 min 👾
@@ -902,7 +902,7 @@ Time to finish: 15 min 👾
 
 * Automate anything
 * Build your own clients or interfaces for AWS
-* No need to create HTTP requests and worry about payloads, formats, headers
+* No need to create HTTP requests and worry about payloads, formats, and headers
 * Work in your favorite environment: Java, Python, Node and many more
 
 ---
@@ -1214,7 +1214,7 @@ Declarative requires that users specify the end state of the infrastructure they
 * Racing conditions
 * Unpredictable results
 
-^Imperative could be more flexible with dynamic if/else conditions while declarative wold just break.
+^Imperative could be more flexible with dynamic if/else conditions while declarative would just break.
 
 ---
 
@@ -1283,7 +1283,7 @@ Resources:
 aws cloudformation create-stack --stack-name myteststack --template-body file:////home//local//test//sampletemplate.json
 ```
 
-It will give you stack ID which you can use later to check on the status of creation.
+It will give you a stack ID which you can use later to check on the status of creation.
 
 
 ---
@@ -1637,7 +1637,7 @@ Any ideas? Just say out loud.
 
 ---
 
-## Developers can implement their own solution or use one of the open source... but AWS has a service... meet [CodeDeploy](https://aws.amazon.com/codedeploy)!
+## Developers can implement their own solution or use one of the open sources... but AWS has a service... meet [CodeDeploy](https://aws.amazon.com/codedeploy)!
 
 ---
 
@@ -1717,7 +1717,7 @@ Policy for AWSCodeDeployRole in JSON (for CLI)
 # 2. Create an instance
 
 * Amazon Linux t2.micro
-* use CDInstanceRole in IAM role so EC2 instance
+* use CDInstanceRole in IAM role to EC2 instance
 * Install codedeploy agent in User Data (code/install-codedeploy-agent.sh)
 * Use 8Gb SSD
 * Tag with env=dev
@@ -1776,7 +1776,7 @@ See the code change after editing on GitHub
 # Verifying
 
 1. Observe the code deploy in the pipeline (Source and Beta stages)
-1. Copy public URL of one of your instances and navigate to it in the browser
+1. Copy the public URL of one of your instances and navigate to it in the browser
 1. Edit GitHub source (index.js)
 1. See changes
 
@@ -1809,7 +1809,7 @@ Elastic Beanstalk: only app management service
 
 # Lab 4: Never deploy (manually) again!
 
-Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
+Task: Build CI with CodeDeploy and code from GitHub, update code, and see change in a browser
 
 Detailed instructions and link are in labs/4-codedeploy.md
 
@@ -1976,7 +1976,7 @@ https://aws.amazon.com/marketplace/pp/B06XCFDF9K
 1. Configure cluster
 1. Launch
 
-^Task is a blueprint for an application (what images, how many etc.); service runs and maintains (auto-recovery) tasks in a cluster; cluster is EC2 container insances (instances with container agent)
+^Task is a blueprint for an application (what images, how many etc.); service runs and maintains (auto-recovery) tasks in a cluster; cluster is EC2 container instances (instances with container agent)
 
 ---
 
