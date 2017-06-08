@@ -3,6 +3,13 @@ slidenumbers: true
 theme: Merriweather, 8
 build-lists: true
 
+[.slidenumbers: false] 
+[.hide-footer]
+
+![fit](images/AWS-Intermediate.png)
+
+---
+
 # AWS Intermediate
 ## Overview
 
@@ -151,3 +158,22 @@ Multitasking does NOT work (for work which requires focus)[^1]
 * AWS Certifications
 * AWS Books
 * AWS Courses
+
+---
+
+# PS: 30-second summary of AWS Intro
+
+![inline](images/AWS-Intro.png)
+
+<https://node.university/p/aws-intro>
+
+---
+
+## Topics covered
+
+* Cloud and AWS Basics
+* Launching EC2
+* Environment and App Deploy Automation
+* Networking
+* S3
+* Auto Scaling
