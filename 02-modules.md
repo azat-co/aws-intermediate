@@ -1,6 +1,6 @@
 footer: © NodeProgram.com, Node.University and Azat Mardan 2017
 slidenumbers: true
-theme: Merriweather, 8
+theme: Simple, 1
 build-lists: true
 
 # AWS Intermediate
@@ -91,7 +91,7 @@ Refresher from the AWS Intro course. Yell out loud the cloud computing benefits!
 * Make informed decisions
 * Learn AWS best practices
 
-Whitepaper: pdfs/AWS_Well-Architected_Framework.pdf  
+Whitepaper: pdfs/AWS_Well-Architected_Framework.pdf
 
 ---
 
@@ -1323,8 +1323,8 @@ CloudFormation Example: S3 Bucket with Static Website
                "AccessControl" : "PublicRead",
                "WebsiteConfiguration" : {
                     "IndexDocument" : "index.html",
-                    "ErrorDocument" : "error.html"            
-               }               
+                    "ErrorDocument" : "error.html"
+               }
             }
         }
     }
@@ -1841,11 +1841,36 @@ Time to finish: 20 min
 
 ---
 
+# DynamoDB
+
+* NoSQL: a fully managed cloud database and supports both document and key-value store models
+* [Local version](http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html) for development
+* Has tables, not databases
+* Amazon DynamoDB Accelerator (DAX)-fully managed, highly available, in-memory cache
+
+---
+
 # ElastiCache
 
 ---
 
+# ElastiCache
+
+* In-memory data store and cache in the cloud
+* Redis or Memcached
+* Extreme performance and security
+
+---
+
 # Redshift
+
+---
+
+# Redshift
+
+* Fast, simple, cost-effective data warehousing
+* Standard SQL
+* Redshift Spectrum: SQL exabytes of unstructured data in Amazon S3 without ETL
 
 ---
 
@@ -1857,11 +1882,11 @@ Time to finish: 20 min
 
 ---
 
-# Working with ElasticBeanstalk
+# Working with Elastic Beanstalk
 
 ---
 
-# ElasticBeanstalk Benefits
+# Elastic Beanstalk Benefits
 
 * Easy and simple to get started
 * Increased developer productivity
@@ -1879,6 +1904,11 @@ Time to finish: 20 min
 * Node.js
 * Docker
 * Ruby
+
+---
+
+# App Environments (cont)
+
 * Java
 * .NET
 * Docker
@@ -1886,7 +1916,7 @@ Time to finish: 20 min
 
 ---
 
-# Ways to work with ElasticBeanstalk
+# Ways to work with Elastic Beanstalk
 
 * GitHub
 * zip
@@ -1898,19 +1928,21 @@ Time to finish: 20 min
 ---
 
 
-# ElasticBeanstalk Resources
+# Elastic Beanstalk Resources
 
 Use Elastic Beanstalk to deploy a web app which uses RDS:
 
 * <http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_nodejs.html>
-* [Getting Started with ElasticBeanstalk](https://aws.amazon.com/elasticbeanstalk/getting-started/)
+* [Getting Started with Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/getting-started/)
 * [Developer Resources](https://aws.amazon.com/elasticbeanstalk/developer-resources/)
 
 ---
 
-# Demo 💻 : Launching a Node app
+# Demo 💻 :  Elastic Beanstalk Node example app
 
-[link](https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-1#/newApplication?applicationName=EBNodeSampleApp&solutionStackName=Node.js&tierName=WebServer)
+AWS Web console Elastic Beanstalk Node app example "EBNodeSampleApp"
+
+To start the EBNodeSampleApp wizard for the app in `us-west-1` (N. California), click the [link](https://console.aws.amazon.com/elasticbeanstalk/home?region=us-west-1#/newApplication?applicationName=EBNodeSampleApp&solutionStackName=Node.js&tierName=WebServer).
 
 ---
 
@@ -1955,6 +1987,14 @@ https://aws.amazon.com/marketplace/pp/B06XCFDF9K
 ---
 
 ![inline](images/amazon-linux-docker-ami.png)
+
+---
+
+# Elastic Beanstalk + Docker
+
+---
+
+![fit](images/ebs-create-app.png)
 
 ---
 
@@ -2015,15 +2055,29 @@ Configure cluster
 
 ---
 
-# Guides
+# ECS Guides
+
+![inline](images/node-production-03.png)
+
+<https://node.university/p/node-in-production>
+
+---
+
+# ECS Guides (cont)
+
+* Detailed video [Node in Production with Docker and AWS](https://node.university/p/node-in-production) on Node University
+* Detailed text [walk-through with Node, ECR and Docker](https://github.com/azat-co/node-in-production/blob/master/labs/2-aws-containers.md) on GitHub
+* Detailed video [Node in Prod webinar](https://node.university/courses/webinars/lectures/1793018)
+
+---
+
+# More ECS Guides
 
 * [Deploy Docker Containers](https://aws.amazon.com/getting-started/tutorials/deploy-docker-containers)
 * [Getting Started with Amazon ECR](http://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_GetStarted.html)
 
 
 ---
-
-
 
 # ❓ Questions? ❓
 
@@ -2064,7 +2118,7 @@ Configure cluster
 ---
 
 
-# Demo: Building Microservice with Lambda and API Gateway
+# Demo :computer:: Building Microservice with Lambda and API Gateway
 
 ---
 
