@@ -20,7 +20,7 @@ Azat Mardan @azat_co
 
 ## Topics covered
 
-* Buiding scalable infrastructure in AWS web console
+* Building scalable infrastructure in AWS web console
 * Using AWS CLI and User Data to automate
 * Using CodeDeploy
 * Using CloudFormation
