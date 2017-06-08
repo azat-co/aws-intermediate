@@ -76,7 +76,7 @@ It's a great idea to test your HTTP server locally on your developer machine. Yo
 node hello-world-server-port.js
 ```
 
-Or if you want to specify a different than 3000 port with PORT environment variable his:
+Or if you want to specify a different port instead of 3000, then you can do so with the PORT environment variable. For example, to use 80 use this:
 
 ```
 sudo PORT=80 node hello-world-server-port.js
