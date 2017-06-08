@@ -13,7 +13,7 @@ If you would like to attempt the task, then skip the walk-through and go for the
 Check for Python. Make sure you have 2.6+ or 3.6+. You can use pip (Python package manager) to install AWS CLI.
 
 ```bash
-phython --version
+python --version
 pip --version
 pip install awscli
 ```
@@ -42,7 +42,7 @@ Simply go to <https://nodejs.org>, find version 6 (or 8 - LTS which is long-term
 
 Open the links to download and install other tools:
 
-* [Docker](https://www.docker.com) deamon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
+* [Docker](https://www.docker.com) daemon/engine - advanced if we have time ([instructions](https://docs.docker.com/engine/installation))
 
 Article on [Node.js in Containers Using Docker](https://webapplog.com/node-docker).
 
