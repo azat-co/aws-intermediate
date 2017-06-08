@@ -1,6 +1,6 @@
 # Lab 3: Form the Cloud ☁️
 
-Autoscaling group is one of the pillars of the AWS well-architectured framework— reliability. With autoscaling group you can set up alarm on metrics (CPU, memory, app metrics, etc.) to handle the load or decrease  to save on cost. For example, you will have Elastic Load Balancer, 2 or 3 instances in different Availability Zones, Launch Configuration and Autoscaling group with policies and alarms... many various parts to set up.
+Autoscaling group is one of the pillars of the AWS well-architectured framework— reliability. With autoscaling group, you can set up alarm on metrics (CPU, memory, app metrics, etc.) to handle the load or decrease  to save on cost. For example, you will have Elastic Load Balancer, 2 or 3 instances in different Availability Zones, Launch Configuration and Autoscaling group with policies and alarms... many various parts to set up.
 
 If you've ever tried to set up an autoscaling group in the AWS web console (one of the labs in [the AWS Intro course](https://github.com/azat-co/aws-intro)), that's a boatload of clicks. With every manual click, anything can go wrong.
 
@@ -28,7 +28,7 @@ Create a CF (CloudFormation) blueprint with autoscaling group or modify the blue
 
 * InstanceType: Specify instance type
 * OperatorEMail: Specify email to receive alarms
-* KeyName: Specify SSH key pair name (must exists)
+* KeyName: Specify SSH key pair name (must exist)
 * SSHLocation: Specify origin IP of the SSH connections
 
 The provided `NodeAutoScalingMultiAZWithNotifications.json` blueprint creates the following resources:
@@ -463,7 +463,7 @@ The JSON CloudFormation is in `code/cloudformation` so navigate there:
 cd code/cloudformation
 ```
 
-You can use table formate by providing env var. The CF blueprint is supplied from a file. It has Node installation and take the app code from GitHub Gist (See UserData in `NodeAutoScalingMultiAZWithNotifications.json` for more details). Modify SSH key pair value (must exist) and email before running this command.
+You can use table format by providing env var. The CF blueprint is supplied from a file. It has Node installation and take the app code from GitHub Gist (See UserData in `NodeAutoScalingMultiAZWithNotifications.json` for more details). Modify SSH key pair value (must exist) and email before running this command.
 
 ```
 AWS_DEFAULT_OUTPUT="table" aws cloudformation create-stack --stack-name autoscale-stack \
@@ -527,7 +527,7 @@ Here's the example of the JSON output:
 }
 ```
 
-If you prefer JSON then use:
+If you prefer JSON, then use:
 
 ```
 AWS_DEFAULT_OUTPUT="json" aws cloudformation describe-stacks
@@ -589,7 +589,7 @@ You are all set.
 
 ## 4. Load/Stress test the instances in the stack
 
-You will need the public URL of the Elastic Load Balancer. Put it in your command where `c` is concurrency and `rps` is requests per seconds:
+You will need the public URL of the Elastic Load Balancer. Put it in your command where `c` is concurrency and `rps` is request per second:
 
 ```
 loadtest -c 100 --rps 200 http://autoscale-elasticl-puoz0b56swr8-1422837909.us-west-1.elb.amazonaws.com/
@@ -601,7 +601,7 @@ Observe the alarms using CLI or in web console.
 aws cloudwatch describe-alarms
 ```
 
-You should increase StateValue as `ALARM` and increase in instances in CloudFormation resources and in EC2.  To get list of instances from EC2, run:
+You should increase StateValue as `ALARM` and increase in instances in CloudFormation resources and in EC2.  To get the list of instances from EC2, run:
 
 ```
 aws ec2 describe-instances
@@ -620,19 +620,19 @@ Navigating to EC2 will show a new instance being created (it won't be available 
 
 ![](../images/lab3-alarm-ec2.png)
 
-Moreover, the ELB will show the new instance as well in the Instances tab. Notice that ELB checks for readiness by performing health check before routing traffic/load (see status InService and OutService). Also, ELB will deploy the new instance in a different Availability Zone (AZ) for increased resiliency of the system (this specified in the CloudFormation blueprint).
+Moreover, the ELB will show the new instance as well in the Instances tab. Notice that ELB checks for readiness by performing a health check before routing traffic/load (see status InService and OutService). Also, ELB will deploy the new instance in a different Availability Zone (AZ) for increased resiliency of the system (this is specified in the CloudFormation blueprint).
 
 ![](../images/lab3-alarm-elb.png)
 
-Finally, go ahead and check our email. Once you confirmed the subscription to the notification topic, you will be receiving alarms emails.
+Finally, go ahead and check your email. Once you've confirmed the subscription to the notification topic, you will be receiving alarm emails.
 
-Finally, once you stop the load test feel free to wait for the low CPU alarm to kick in and remove the second EC2 instance so scaling group has just once as it did initially. This way, high will be back to OK and low will be in ALARM:
+Finally once you've stopped the load test, feel free to wait for the low CPU alarm to kick in and remove the second EC2 instance so scaling group only has one, as it did initially. This way, high will be back to OK and low will be in ALARM:
 
 ![](../images/lab3-alarm-elb.png)
 
 ## 5. Terminate Stack
 
-Terminate the stack with CLI or from web console.
+Terminate the stack with CLI or from the web console.
 
 ```
 aws cloudformation delete-stack --stack-name autoscale-stack
@@ -642,4 +642,4 @@ aws cloudformation delete-stack --stack-name autoscale-stack
 # Troubleshooting
 
 * High CPU alarm is not being triggered. Try increasing loadtest c and rps numbers. Check that your out-going load test requests are not blocked by your corporate proxy.
-* No hello world visible at ELB's URL. Check EC2 logs for errors. User Data / cloud init script might be failing for one or the other reason.
+* No hello world visible at ELB's URL. Check EC2 logs for errors. User Data / cloud init script might be failing for one or another reason.
