@@ -1,6 +1,6 @@
 # Lab 4: Never deploy (manually) again!
 
-In an competitive marketplace, time to market is one of the best advantages a company can have. By delivering products and services faster to customers, validating assumptions and fixing bugs, companies can outcompete slower incumbents (or defend off startups).
+In a competitive marketplace, the time to market is one of the best advantages a company can have. By delivering products and services faster to customers, validating assumptions and fixing bugs, companies can outcompete slower incumbents (or defend off startups).
 
 As a software engineer, gone are the days of 6 or even 12-month release cycles. The best tech companies deliver code to production multiple times per day. How do they do it? By automating as much as possible with Continuous Integration and Delivery.
 
@@ -9,11 +9,11 @@ Creating CI/CD has long been a tough task requiring high expertise and knowledge
 
 For example, you have some infrastructure provisioned and pull code from GitHub. You update the code in GitHub and in a few moments your changes are live on the public facing HTTP web server. Auto-magic! 🏭🔮
 
-Let's learn create this CI now.
+Let's learn how to create this CI now.
 
 # Task
 
-Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
+Task: Build CI with CodeDeploy and code from GitHub, update code, and see the changes in a browser
 
 
 # Walk-through
@@ -23,7 +23,7 @@ If you would like to attempt the task, then skip the walk-through and go for the
 1. Switch to Oregon `us-west-2` region
 1. Create Stack: create an instance with CloudFormation
 1. Create CodeDeploy
-1. Create App Repo: create and push app and deployments scripts to GitHub
+1. Create App Repo: create and push app and deployment scripts to GitHub
 1. Create CodePipeline
 1. Test Continuous Integration (CI) by making changes to GitHub and seeing them deployed automatically
 
@@ -57,7 +57,7 @@ aws cloudformation create-stack \
   --capabilities CAPABILITY_IAM
 ```
 
-Result will have stack ID because the stack won't be created instanteniously. For exmaple:
+The result will have stack ID because the stack won't be created instantaneously. For example:
 
 ```
 {
@@ -65,7 +65,7 @@ Result will have stack ID because the stack won't be created instanteniously. Fo
 }
 ```
 
-You can get current info about the stack, its status and its creation progress with:
+You can get current the info about the stack, its status and its creation progress with:
 
 ```
 aws cloudformation describe-stacks
@@ -81,7 +81,7 @@ aws cloudformation wait stack-create-complete --stack-name NodeAppCodeDeployStac
 
 ### 3.1. Create CodeDeploy Service IAM role
 
-There are two thing needed: trust policy and managed policy.
+There are two things needed: trust policy and managed policy.
 
 Before you create CodeDeploy, it needs IAM role with a special policy. This special policy can be provided in a JSON format (e.g., `codedeploy-role-trust-policy.json`):
 
@@ -109,7 +109,7 @@ Here's the command to create a role and add a trust relationship policy from a f
 aws iam create-role --role-name CodeDeployServiceRole --assume-role-policy-document file://codedeploy-role-trust-policy.json
 ```
 
-Your output will looks similar to this *except* for the Arn:
+Your output will look similar to this *except* for the Arn:
 
 ```js
 {
@@ -144,7 +144,7 @@ For the managed policy, use the  [attach-role-policy](http://docs.aws.amazon.com
 aws iam attach-role-policy --role-name CodeDeployServiceRole --policy-arn arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
 ```
 
-The verify right away:
+The right away to verify:
 
 ```
 aws iam get-role --role-name CodeDeployServiceRole
@@ -211,7 +211,7 @@ More info: <http://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-gr
 
 ## 4. Create App Repo
 
-You can use provided GitHub repository <https://github.com/azat-co/codedeploy-codepipeline-node> which has a Node HTTP server and shell scripts, but if you want to modify code you will need to do:
+You can use the provided GitHub repository <https://github.com/azat-co/codedeploy-codepipeline-node> which has a Node HTTP server and shell scripts, but if you want to modify the code you will need to do:
 
 1. Fork repository to have your own copy which you can modify (commit and push)
 1. Create a new repository from scratch following steps below
@@ -402,7 +402,7 @@ Get GitHub token (for CLI): <https://github.com/settings/tokens>.
 ![](../images/github-oauth-token.png)
 
 
-I have access to public repo in GitHub access token setting. Obviously, if your repository is private you'll need to give access to CodePipeline via the personal access token setting.
+I have access to public repo in GitHub access token setting. Obviously, if your repository is private, you'll need to give access to CodePipeline via the personal access token setting.
 
 ![](../images/github-oauth-token-2.png)
 
@@ -484,7 +484,7 @@ The structure has two stages: source and deploy. You can keep adding more stages
 * `roleArn`, the IAM role which has the inline policies for the CodePipeline, e.g., `arn:aws:iam::161599702702:role/CodePipelineServiceRole`
 * `OAuthToken`: your GitHub Access OAuth token (personal or from an app)
 
-Other values you might need to modify depending on what values did you use in previous steps of this lab are:
+Other values you might need to modify, depending on what values you used in the previous steps of this lab, are:
 
 * `ApplicationName`: your application name from CodeDeploy, e.g., `Node_App`
 * `DeploymentGroupName`: your deployment group name from CodeDeploy step, e.g., `NodeCD_DG`
@@ -493,7 +493,7 @@ Other values you might need to modify depending on what values did you use in pr
 * `Repo`: your GitHub repository
 * `Branch`: your GitHub repository branch (e.g., master)
 
-Once you get your JSON pipeline structure with your own values and save it in some file (e.g., `pipeline.json`) run this to create a new pipeline:
+Once you've got your JSON pipeline structure with your own values and have saved it in some file (e.g., `pipeline.json`), run this to create a new pipeline:
 
 ```
 aws codepipeline create-pipeline --cli-input-json file://pipeline.json
@@ -514,15 +514,15 @@ Funny thing is that even [AWS docs recommend creating pipeline structure from ex
 aws codepipeline get-pipeline --name node-app-pipeline
 ```
 
-Of course, it's of little use if you are creating the first pipeline. However, there's a web wizard. Let' use it just as an alternative to CLI.
+Of course, it's of little use if you are creating the first pipeline. However, there's a web wizard. Let's use it just as an alternative to CLI.
 
 ### 5.1. CodePipeline via Web Console (option B)
 
-This step is optional. We use mostly CLI during this course, but because pipeline creationg involved a few steps, you might want to consider using web console and its pipeline wizard.
+This step is optional. We use mostly use CLI during this course, but because pipeline creation involved a few steps, you might want to consider using web console and its pipeline wizard.
 
 To use web wizard, simple go to Oregon `us-west-2` region, Developer Tools | CodePipeline. Click on Create pipeline.
 
-Enter name pipeline name:
+Enter pipeline name:
 
 ![](../images/codepipeline-wizard-1.png)
 
@@ -540,7 +540,7 @@ On the screen after that which is number 4: Source, select AWS CodeDeploy, your 
 
 ![](../images/codepipeline-wizard-4.png)
 
-On the screen 5, you can select an existing pipeline service role if you have it or click the button to let the wizard create a new role with appropriate policy for you.
+On screen 5, you can select an existing pipeline service role if you have it or click the button to let the wizard create a new role with appropriate policy for you.
 
 ```
 aws codepipeline get-pipeline --name node-app-pipeline
@@ -550,7 +550,7 @@ The end result of creating the pipeline should look like the one shown below:
 
 ![](../images/codepipeline-wizard-5.png)
 
-It shows you the GitHub hash of the commit, and status of the deployment. The first deployment should start automatically. Next will be started on each new `git push` to GitHub or by pressing "Release change".
+It shows you the GitHub hash of the commit, and status of the deployment. The first deployment should start automatically. The next will be started on each new `git push` to GitHub or by pressing "Release change".
 
 
 ## 6. Test CI
@@ -560,7 +560,6 @@ Once deploy is done without error as shown in the deploy web console, you can gr
 ![](../images/pipeline-success.png)
 
 Go to your GitHub repository and modify `server.js` by changing Hello World text. You can use code editor and git CLI to commit and push or use GitHub web interface. If you are using GitHub website, you can commit right to master from there, see below:
-
 
 ![](../images/github-edit.png)
 
@@ -576,4 +575,4 @@ Now that you know what steps are involved, you can create a CloudFormation file 
 
 * Cannot see Hello World on the deployed public URL. Go to your pipeline view from [pipeline dashboard](https://us-west-2.console.aws.amazon.com/codepipeline/home?region=us-west-2#/dashboard), e.g., [node-app-pipeline view](https://us-west-2.console.aws.amazon.com/codepipeline/home?region=us-west-2#/view/node-app-pipeline). See if you have failed deploy. By clicking on failed deploy you can see logs of each script like BeforeInstall.
 * CloudFormation fails when you try to create stack (EC2 instance with CodeDeploy agent): you can trouble shoot/debug from the CloudFormation dashboard by inspecting events and logs. Alternitevely, you can [create CodeDeploy EC2 instance manually](http://docs.aws.amazon.com/codedeploy/latest/userguide/instances-ec2-create.html). Make sure you tag is accordingly and the instance has CodeDeploy agent or use an image with CodeDeploy (Amazon Linux CodeDeploy AMI).
-* Source stage fails in CodePipeline. Make sure your GitHub access token has enough permissions to access your repository.
+* Source stage fails in CodePipeline. Make sure your GitHub access token has enough permission to access your repository.
