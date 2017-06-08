@@ -82,6 +82,8 @@ Or if you want to specify a different port instead of 3000, then you can do so w
 sudo PORT=80 node hello-world-server-port.js
 ```
 
+Depending on the port number, you can test the response from the HTTP web server with the URLs like <http://localhost:3000> or <http://localhost> for 3000 and 80 correspondingly. 
+
 ## 3. Create Node script
 
 You can use Node as a scripting language to automate any AWS task. You can add parameters to your scripts to make them flexible (region, instance type, source code, etc.).

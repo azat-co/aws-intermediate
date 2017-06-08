@@ -92,7 +92,7 @@ You won't see any status so let's verify your group. Look for protocol and port.
 aws ec2 describe-security-groups --group-names http-sg
 ```
 
-## 3. Create key pair
+## 3. Create an SSH key pair
 
 This is a tricky step. You are not supposed to access your instances via SSH so there's nothing to do here. :)
 
