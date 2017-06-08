@@ -2,9 +2,9 @@
 
 Servers are fun until they are not. You are running a news agency which has high peaks of traffic but they are happen sporadically (infrequently). It'll be more cost effective to set up a REST API using Lambda to access and perform CRUD on tables in your noSQL DynamoDB database. Lambdas are charged only when they are working unlike EC2 instances which are charged for always as long as they are running. This way with Lambda, your company will pay only for peaks and in other times when there's 0 traffic, it won't be charged at all! Stales news get almost no traffic.
 
-Also, your last IT Ops person is leaving to work for Google. Company can't hire a replacement. Lambda will require almost no maintenance since they are managed app environment. All the patches, security and scaling is taking care off by the AWS experts!
+Also, your last IT Ops person is leaving to work for Google. Company can't hire a replacement. Lambda will require almost no maintenance since they are managed app environment. All the patches, security and scaling is taken cared of by the AWS experts!
 
-You'll build a REST API for all the tables not just one. As an example, you'll be using and working with messages but clients can work with any table by sending a different query or payload. Later, you'll be able to create auth and validate request and response in API Gateway (not covered in this lab). You are going to use three services:
+You'll build a REST API for all the tables, not just one. As an example, you'll be using and working with messages but clients can work with any table by sending a different query or payload. Later, you'll be able to create auth and validate request and response in API Gateway (not covered in this lab). You are going to use three services:
 
 * DynamoDB
 * Lambda
@@ -233,7 +233,7 @@ aws lambda create-function --function-name db-api \
   --timeout 10
 ```
 
-Memory size and timout are optional. By default, they are 128 and 3 correspondigly.
+Memory size and timeout are optional. By default, they are 128 and 3 correspondigly.
 
 Results will look similar to this but with different IDs of course:
 
