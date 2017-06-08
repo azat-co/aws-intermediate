@@ -1,19 +1,19 @@
 # Lab 4: Never deploy (manually) again!
 
-In an competitive marketplace, time to market is one of the best advantages a company can have. By delivering products and services faster to customers, validating assumptions and fixing bugs, companies can outcompete slower incumbents (or defend off startups).
+In a competitive marketplace, the time to market is one of the best advantages a company can have. By delivering products and services faster to customers, validating assumptions and fixing bugs, companies can outcompete slower incumbents (or defend off startups).
 
 As a software engineer, gone are the days of 6 or even 12-month release cycles. The best tech companies deliver code to production multiple times per day. How do they do it? By automating as much as possible with Continuous Integration and Delivery.
 
-Creating CI/CD has long been a tough task requiring high expertise and knowledge of special technologies and libraries, e.g., Jenkins. However, with AWS CodeDeploy and CodePipeline, anyone can create a fully functional CI environment in just a few minutes.  
+Creating CI/CD has long been a tough task requiring high expertise and knowledge of special technologies and libraries, e.g., Jenkins. However, with AWS CodeDeploy and CodePipeline, anyone can create a fully functional CI environment in just a few minutes.
 
 
 For example, you have some infrastructure provisioned and pull code from GitHub. You update the code in GitHub and in a few moments your changes are live on the public facing HTTP web server. Auto-magic! 🏭🔮
 
-Let's learn create this CI now.
+Let's learn how to create this CI now.
 
 # Task
 
-Task: Build CI with CodeDeploy and code from GitHub, update code, see change in a browser
+Task: Build CI with CodeDeploy and code from GitHub, update code, and see the changes in a browser
 
 
 # Walk-through
@@ -23,7 +23,7 @@ If you would like to attempt the task, then skip the walk-through and go for the
 1. Switch to Oregon `us-west-2` region
 1. Create Stack: create an instance with CloudFormation
 1. Create CodeDeploy
-1. Create App Repo: create and push app and deployments scripts to GitHub
+1. Create App Repo: create and push app and deployment scripts to GitHub
 1. Create CodePipeline
 1. Test Continuous Integration (CI) by making changes to GitHub and seeing them deployed automatically
 
@@ -57,7 +57,7 @@ aws cloudformation create-stack \
   --capabilities CAPABILITY_IAM
 ```
 
-Result will have stack ID because the stack won't be created instanteniously. For exmaple:
+The result will have stack ID because the stack won't be created instantaneously. For example:
 
 ```
 {
@@ -65,7 +65,9 @@ Result will have stack ID because the stack won't be created instanteniously. Fo
 }
 ```
 
-You can get current info about the stack, its status and its creation progress with:
+
+You can get the current info about the stack, its status and its creation progress with:
+
 
 ```
 aws cloudformation describe-stacks
@@ -81,7 +83,7 @@ aws cloudformation wait stack-create-complete --stack-name NodeAppCodeDeployStac
 
 ### 3.1. Create CodeDeploy Service IAM role
 
-There are two thing needed: trust policy and managed policy.
+There are two things needed: trust policy and managed policy.
 
 Before you create CodeDeploy, it needs IAM role with a special policy. This special policy can be provided in a JSON format (e.g., `codedeploy-role-trust-policy.json`):
 
@@ -109,7 +111,7 @@ Here's the command to create a role and add a trust relationship policy from a f
 aws iam create-role --role-name CodeDeployServiceRole --assume-role-policy-document file://codedeploy-role-trust-policy.json
 ```
 
-Your output will looks similar to this *except* for the Arn:
+Your output will look similar to this *except* for the Arn:
 
 ```js
 {
@@ -138,19 +140,19 @@ Your output will looks similar to this *except* for the Arn:
 }
 ```
 
-For the managed policy, use the  [attach-role-policy](http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html) command with your newly created role name (e.g., `CodeDeployServiceRole`) and the policy Arn (i.e., `arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole` - **do NOT change Arn**):
+For the managed policy, use the [attach-role-policy](http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html) command with your newly created role name (e.g., `CodeDeployServiceRole`) and the policy Arn (i.e., `arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole` - **do NOT change Arn**):
 
 ```
 aws iam attach-role-policy --role-name CodeDeployServiceRole --policy-arn arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
 ```
 
-The verify right away:
+Verify that the policy has been attached to the role right away:
 
 ```
 aws iam get-role --role-name CodeDeployServiceRole
 ```
 
-Or just get the Role.Arn to use later:
+Or just get the Role.Arn to use later by using `--query` for filtering out the output information:
 
 ```
 aws iam get-role --role-name CodeDeployServiceRole --query "Role.Arn" --output text
@@ -211,7 +213,7 @@ More info: <http://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-gr
 
 ## 4. Create App Repo
 
-You can use provided GitHub repository <https://github.com/azat-co/codedeploy-codepipeline-node> which has a Node HTTP server and shell scripts, but if you want to modify code you will need to do:
+You can use the provided GitHub repository <https://github.com/azat-co/codedeploy-codepipeline-node> which has a Node HTTP server and shell scripts, but if you want to modify the code, then you will need to do:
 
 1. Fork repository to have your own copy which you can modify (commit and push)
 1. Create a new repository from scratch following steps below
@@ -402,7 +404,7 @@ Get GitHub token (for CLI): <https://github.com/settings/tokens>.
 ![](../images/github-oauth-token.png)
 
 
-I have access to public repo in GitHub access token setting. Obviously, if your repository is private you'll need to give access to CodePipeline via the personal access token setting.
+I have access to public repo in GitHub access token setting. Obviously, if your repository is private, you'll need to give access to CodePipeline via the personal access token setting.
 
 ![](../images/github-oauth-token-2.png)
 
@@ -484,16 +486,20 @@ The structure has two stages: source and deploy. You can keep adding more stages
 * `roleArn`, the IAM role which has the inline policies for the CodePipeline, e.g., `arn:aws:iam::161599702702:role/CodePipelineServiceRole`
 * `OAuthToken`: your GitHub Access OAuth token (personal or from an app)
 
-Other values you might need to modify depending on what values did you use in previous steps of this lab are:
+Replace the source code repository values:
 
+* `Owner`: your GitHub username, must be just a string, e.g., "azat-co"
+* `Repo`: your GitHub repository, must be just the name, not a URL, e.g., "codedeploy"
+* `Branch`: your GitHub repository branch, just a string, e.g., "master"
+
+You might need to modify other values depending on what values you used in the previous steps of this lab. Here's the list of the values which you need to **replace, verify and modify**:
+
+* `name`: arbitrary name
 * `ApplicationName`: your application name from CodeDeploy, e.g., `Node_App`
 * `DeploymentGroupName`: your deployment group name from CodeDeploy step, e.g., `NodeCD_DG`
-* `name`: arbitrary name
-* `Owner`: your GitHub username
-* `Repo`: your GitHub repository
-* `Branch`: your GitHub repository branch (e.g., master)
 
-Once you get your JSON pipeline structure with your own values and save it in some file (e.g., `pipeline.json`) run this to create a new pipeline:
+
+Once you've gotten your JSON pipeline structure with your own values and have saved it in some file (e.g., `pipeline.json`), create a pipeline with AWS CLI. Simply run the command below to create a new pipeline, but of course verify and replace the file name `pipeline.json` if needed:
 
 ```
 aws codepipeline create-pipeline --cli-input-json file://pipeline.json
@@ -514,33 +520,33 @@ Funny thing is that even [AWS docs recommend creating pipeline structure from ex
 aws codepipeline get-pipeline --name node-app-pipeline
 ```
 
-Of course, it's of little use if you are creating the first pipeline. However, there's a web wizard. Let' use it just as an alternative to CLI.
+Of course, it's of little use if you are creating the first pipeline. However, there's a web wizard which is as an alternative to AWS CLI. In some ways, web wizard will do more things for you (like making sure the role is the right one), but the downside is that with the web wizard is harder to automate than a series of shell scripts.
 
 ### 5.1. CodePipeline via Web Console (option B)
 
-This step is optional. We use mostly CLI during this course, but because pipeline creationg involved a few steps, you might want to consider using web console and its pipeline wizard.
+This step is optional. We use mostly CLI during this course, but because pipeline creating involved a few steps, you might want to consider using web console and its pipeline wizard.
 
 To use web wizard, simple go to Oregon `us-west-2` region, Developer Tools | CodePipeline. Click on Create pipeline.
 
-Enter name pipeline name:
+On step 1, enter the pipeline name:
 
 ![](../images/codepipeline-wizard-1.png)
 
-Connect with GitHub by entering your GitHub credentials.
+On step 2 (Source), connect with GitHub by entering your GitHub credentials.
 
 ![](../images/codepipeline-wizard-2.png)
 
-Select the app repository, the one which has `appspec.yml`.
+Then still on step 2, select the app repository, the one which has `appspec.yml`.
 
 ![](../images/codepipeline-wizard-3.png)
 
-Skip build. Builds are important and you will be able to add more stages later.
+Skip step 3 (Build) for this lab. In a real setup, builds are important but out of the scope of this lab. However you will be able to add more stages to the pipeline later, once this lab is done once and the pipeline is created.
 
-On the screen after that which is number 4: Source, select AWS CodeDeploy, your app name (create before) and group (also created before in this lab).
+The next step is step number 4: Source, select AWS CodeDeploy. Provide your app name (create before) and group (also created before in this lab):
 
 ![](../images/codepipeline-wizard-4.png)
 
-On the screen 5, you can select an existing pipeline service role if you have it or click the button to let the wizard create a new role with appropriate policy for you.
+On the step 5, you can select an existing pipeline service role if you have it or click the button to let the wizard create a new role with appropriate policy for you.
 
 ```
 aws codepipeline get-pipeline --name node-app-pipeline
@@ -550,7 +556,7 @@ The end result of creating the pipeline should look like the one shown below:
 
 ![](../images/codepipeline-wizard-5.png)
 
-It shows you the GitHub hash of the commit, and status of the deployment. The first deployment should start automatically. Next will be started on each new `git push` to GitHub or by pressing "Release change".
+It shows you the GitHub hash of the commit, and status of the deployment. The first deployment should start automatically. The next deployment will be started on each new `git push` to GitHub or manually by pressing "Release change".
 
 
 ## 6. Test CI
