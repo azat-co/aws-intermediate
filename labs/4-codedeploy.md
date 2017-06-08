@@ -399,16 +399,17 @@ aws iam put-role-policy --role-name CodePipelineServiceRole --policy-name CodePi
 ```
 
 
-Get GitHub token (for CLI): <https://github.com/settings/tokens>.
+Get GitHub token. You will feed it to AWS CLI. Personal access token will be just fine. You can get it by going to: <https://github.com/settings/tokens> (need to be logged in) and clicking on *Generate new token*:
 
 ![](../images/github-oauth-token.png)
 
+Copy the token. When the GitHub access token exists, add and verify that it has enough permissions. My repo is public so I only have checked the access to `public_repo`, `repo:status` and `repo_deployment` in my GitHub access token's setting. You can copy my settings if your repository is public. 
 
-I have access to public repo in GitHub access token setting. Obviously, if your repository is private, you'll need to give access to CodePipeline via the personal access token setting.
+Obviously, if your repository is private, you'll need to give access to CodePipeline via the personal access token setting `repo`. See more details about settings (GitHub's OAuth scopes) at [GitHub documentation for OAuth scopes.](https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-scopes-for-oauth-apps)
 
 ![](../images/github-oauth-token-2.png)
 
-Here's my example of the CodePipeline structure which is also in the `node-app-pipeline.json` (remember, you'll need to replace a few values listed below the JSON):
+Do you still have the GitHub token? Now you need to create a file which will configure the pipeline. Here's my example of the CodePipeline structure which is also in the `node-app-pipeline.json`. **Remember, you'll need to replace a few values listed below the JSON**.
 
 ```
 {
