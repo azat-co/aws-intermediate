@@ -2094,13 +2094,14 @@ GET https://h8uwddrasb.execute-api.us-west-1.amazonaws.com/prod/my-first-fn?Tabl
 POST https://h8uwddrasb.execute-api.us-west-1.amazonaws.com/prod/my-first-fn?TableName=my-first-table
 
 ```
-{"TableName": "my-first-table",
-
-"Item": {
-"main-part":"1",
-	"username":"CJA402",
-	"password": "cldjmPr!01"
-}}
+{
+  "TableName": "my-first-table",
+  "Item": {
+    "main-part":"1",
+	  "username":"joepineapple",
+	  "password": "jp123"
+  }
+}
 ```
 
 ---
