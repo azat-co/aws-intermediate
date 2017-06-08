@@ -33,15 +33,15 @@ Create a CF (CloudFormation) blueprint with autoscaling group or modify the blue
 
 The provided `NodeAutoScalingMultiAZWithNotifications.json` blueprint creates the following resources:
 
-* NotificationTopic: Emails notifications to OperatorEMail
-* WebServerGroup: Defines autoscaling group
-* LaunchConfig: Defines launch configuration including User Data to install and start the app
-* WebServerScaleUpPolicy: Defines how to scale up, e.g., cooldown period and number of instances to increase
-* WebServerScaleDownPolicy:: Defines how to scale down, e.g., cooldown period and number of instances to decrease
-* CPUAlarmLow: Defines a CPU alarm as more than 50% within 1 minute
-* CPUAlarmHigh: Defines a CPU alarm as less than 25% within 1 minute
-* ElasticLoadBalancer: Defines ELB with listener HTTP:80, cross zone and health check params
-* InstanceSecurityGroup: Defines security group with SSH:22 and HTTP:80 open
+* NotificationTopic: Email notifications to OperatorEMail
+* WebServerGroup: Define autoscaling group
+* LaunchConfig: Define launch configuration including User Data to install and start the app
+* WebServerScaleUpPolicy: Define how to scale up, e.g., cooldown period and number of instances to increase
+* WebServerScaleDownPolicy:: Define how to scale down, e.g., cooldown period and number of instances to decrease
+* CPUAlarmLow: Define a CPU alarm as more than 50% within 1 minute
+* CPUAlarmHigh: Define a CPU alarm as less than 25% within 1 minute
+* ElasticLoadBalancer: Define ELB with listener HTTP:80, cross zone and health check params
+* InstanceSecurityGroup: Define security group with SSH:22 and HTTP:80 open
 
 
 ```js
@@ -550,14 +550,14 @@ Copy the public URL from the Outputs. For example:
                "OutputValue": "http://autoscale-ElasticL-1PFNQT6IWP4VM-1387151330.us-west-1.elb.amazonaws.com"
            }
        ],
-...
+...       
 ```
 
 Note: If you need to delete stack, run:
 
 ```
 aws cloudformation delete-stack --stack-name autoscale-stack
-```
+```       
 
 It's nice to be able to see the create stack in the web console as well. You can find the view shown below by going to Home | CloudFormation and selecting your stack and then the Resources tab at the bottom pane. It will show resources and their statuses:
 
@@ -624,7 +624,7 @@ Moreover, the ELB will show the new instance as well in the Instances tab. Notic
 
 ![](../images/lab3-alarm-elb.png)
 
-Next, go ahead and check our email. Once you confirmed the subscription to the notification topic, you will be receiving alarms emails.
+Finally, go ahead and check our email. Once you confirmed the subscription to the notification topic, you will be receiving alarms emails.
 
 Finally, once you stop the load test feel free to wait for the low CPU alarm to kick in and remove the second EC2 instance so scaling group has just once as it did initially. This way, high will be back to OK and low will be in ALARM:
 
