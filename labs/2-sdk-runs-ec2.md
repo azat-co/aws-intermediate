@@ -84,7 +84,7 @@ sudo PORT=80 node hello-world-server-port.js
 
 ## 3. Create Node script
 
-You can use Node as a scripting language to automate any AWS tasks. You can add parameters to your scripts to make them flexible (region, instance type, source code, etc.).
+You can use Node as a scripting language to automate any AWS task. You can add parameters to your scripts to make them flexible (region, instance type, source code, etc.).
 
 Create a project manifest file by running in a brand new folder:
 
