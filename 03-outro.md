@@ -1,6 +1,6 @@
 footer: © NodeProgram.com, Node.University and Azat Mardan 2017
 slidenumbers: true
-theme: Merriweather, 8
+theme: Simple, 1
 build-lists: true
 
 
@@ -20,15 +20,21 @@ Azat Mardan @azat_co
 
 ## Topics covered
 
-* Building scalable infrastructure in AWS web console
-* Using AWS CLI and User Data to automate
-* Using CodeDeploy
-* Using CloudFormation
-* Using Elastic Beanstalk
+* Well-architectured framework, IAM, AWS CLI and infrastructure as code
+* Node SDK, CloudFormation and User Data to automate
+* CodeDeploy and CodePipeline for CI/CD
+* DynamoDB
+* How to leverage AWS Lambda and API Gateway
 
 ---
 
 ## Labs covered
+
+1. Hello World AWS CLI
+1. SDK
+1. CloudFormation
+1. CodeDeploy and CodePipeline
+1. Serverless and DynamoDB
 
 ---
 
@@ -96,12 +102,21 @@ Azat Mardan @azat_co
 
 ---
 
+![inline](images/acloudguru.png)
+
+---
+
 
 ![inline](images/nodeu.png)
 
 ---
 
-# This course will be soon available on NodeU in a video format!
+# Take Node in Production for more Docker and AWS ECS
+
+![inline](images/node-production-03.png)
+
+
+<https://node.university/p/node-in-production>
 
 ---
 

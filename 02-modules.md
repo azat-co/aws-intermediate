@@ -107,7 +107,8 @@ Whitepaper: pdfs/AWS_Well-Architected_Framework.pdf
 
 ---
 
-# Demo: An example of an environment in AWS
+# An example of an environment in AWS
+
 
 ---
 
@@ -580,6 +581,11 @@ aws iam create-access-key --user-name MyUser
 * Remove unnecessary credentials
 * Use policy conditions for extra security
 * Monitor activity in your AWS account
+
+---
+
+
+![inline](images/management-services.png)
 
 ---
 
@@ -1673,55 +1679,14 @@ How CodePipeline, CodeDeploy and other CI/CD services can work together
 
 ---
 
-# Demo: Building CI with GitHub
+# Building CI with AWS and GitHub
 
----
-
-1. Create roles
-
-1. Create role CDInstanceRole in IAM (AmazonEC2RoleforAWSCodeDeploy)
-1. Create role CDServiceRole (AWSCodeDeployRole)
-
-Use CLI or web console
-
-
----
-
-AmazonEC2RoleforAWSCodeDeploy Policy in JSON (for CLI)
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": [
-        "s3:GetObject",
-        "s3:GetObjectVersion",
-        "s3:ListObjects"
-      ],
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-```
-
----
-
-Policy for AWSCodeDeployRole in JSON (for CLI)
-
-![inline](images/codedeployrole.png)
-
----
-
-# 2. Create an instance
-
-* Amazon Linux t2.micro
-* use CDInstanceRole in IAM role to EC2 instance
-* Install codedeploy agent in User Data (code/install-codedeploy-agent.sh)
-* Use 8Gb SSD
-* Tag with env=dev
-* Add SSH and HTTP for security group
+1. Create roles for the instance and service
+1. Create an instance with CodeDeploy agent
+1. Create custom CodeDeploy deployment and the app
+1. Create CodePipeline
+1. Test the app
+1. Verifying the updates and CI
 
 ---
 
@@ -1737,48 +1702,6 @@ aws s3 cp 's3://aws-codedeploy-us-east-1/latest/codedeploy-agent.noarch.rpm' . \
   --region us-east-1
 yum -y install codedeploy-agent.noarch.rpm
 ```
-
----
-
-# Create custom CodeDeploy deployment
-
-* Use NodeApp and NodeAppInstances for app name and deployment group name
-* Use tag env=dev
-* Deployment config = All at once
-* Use Service Role ARN = CDServiceRole
-
----
-
-# Deploy options
-
-* From S3 (using CLI)
-* From GitHub (AWS CodePipeline)
-
----
-
-# Test
-
-See the code change after editing on GitHub
-
----
-
-# Create CodePipeline
-
-* Enter name
-* Select GitHub as provider and select "Connect to GitHub"
-* Pick repository
-* Skip the build
-* Beta: AWS CodeDeploy, use NodeApp and NodeAppInstances
-* Create pipeline service role using wizard (or manually)
-
----
-
-# Verifying
-
-1. Observe the code deploy in the pipeline (Source and Beta stages)
-1. Copy the public URL of one of your instances and navigate to it in the browser
-1. Edit GitHub source (index.js)
-1. See changes
 
 ---
 
@@ -1811,7 +1734,7 @@ Elastic Beanstalk: only app management service
 
 Task: Build CI with CodeDeploy and code from GitHub, update code, and see change in a browser
 
-Detailed instructions and link are in labs/4-codedeploy.md
+Detailed instructions and links are in labs/4-codedeploy.md
 
 Time to finish: 20 min
 
@@ -1902,8 +1825,7 @@ Time to finish: 20 min
 * Ruby
 * PHP
 * Node.js
-* Docker
-* Ruby
+
 
 ---
 
@@ -1911,8 +1833,8 @@ Time to finish: 20 min
 
 * Java
 * .NET
-* Docker
 * Go
+* Docker
 
 ---
 
@@ -1938,7 +1860,7 @@ Use Elastic Beanstalk to deploy a web app which uses RDS:
 
 ---
 
-# Demo 💻 :  Elastic Beanstalk Node example app
+# Elastic Beanstalk Node example app
 
 AWS Web console Elastic Beanstalk Node app example "EBNodeSampleApp"
 
@@ -1978,13 +1900,15 @@ To start the EBNodeSampleApp wizard for the app in `us-west-1` (N. California), 
 
 ---
 
-# Docker EE for AWS
 
-https://www.docker.com/enterprise-edition
+# Docker EE Resources
 
-https://aws.amazon.com/marketplace/pp/B06XCFDF9K
+* <https://www.docker.com/enterprise-edition>
+* <https://aws.amazon.com/marketplace/pp/B06XCFDF9K>
 
 ---
+
+# Amazon Linux Docker AMI
 
 ![inline](images/amazon-linux-docker-ami.png)
 
@@ -2020,7 +1944,7 @@ https://aws.amazon.com/marketplace/pp/B06XCFDF9K
 
 ---
 
-Create registry
+# Create registry
 
 ![inline](images/deploy-docker-container-1.png)
 
@@ -2037,19 +1961,19 @@ docker push 161599702702.dkr.ecr.us-west-1.amazonaws.com/my-repo:latest
 
 ---
 
-Create task
+# Create task
 
 ![inline](images/deploy-docker-container-2.png)
 
 ---
 
-Configure service
+# Configure service
 
 ![inline](images/deploy-docker-container-3.png)
 
 ---
 
-Configure cluster
+# Configure cluster
 
 ![inline](images/deploy-docker-container-5a.png)
 
@@ -2164,8 +2088,13 @@ POST https://h8uwddrasb.execute-api.us-west-1.amazonaws.com/prod/my-first-fn?Tab
 
 ---
 
-# Lab 5: Create a microservice to save data in DB
+# Lab 5: Serverless
 
+Task:  Create a microservice with AWS Lambda (public endpoint) to CRUD data to/from any DynamoDB table
+
+Detailed instructions and links are in labs/5-serverless.md
+
+Time to finish: 20 min 
 
 ---
 

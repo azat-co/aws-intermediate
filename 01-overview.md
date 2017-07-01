@@ -1,6 +1,5 @@
 footer: © NodeProgram.com, Node.University and Azat Mardan 2017
-slidenumbers: true
-theme: Merriweather, 8
+theme: Simple, 1
 build-lists: true
 
 [.slidenumbers: false] 
@@ -41,9 +40,10 @@ Azat Mardan @azat_co
 
 ---
 
+
 # Why I teach this course?
 
----
+My experience with cloud
 
 * Gizmo: small startup, used Rackspace
 * Storify: small startup, used Joyent and AWS
@@ -70,18 +70,38 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 # Process
 
-* Lectures, demos and hands-on labs - you'll download them soon
-* Lunch break 12-1pm and 2 smaller breaks before and after
-* Fill out sign up sheets and the DI evaluation *before* you leave (put them in the envelope)
-* Slides are often just talking points because reading from slides is boring so pay attention and take notes!
-* Labs have detailed step by step walk-throughs
+* Lectures
+* Demos and lab demos 
+* Hands-on labs with lab documents
 
 ---
 
-# Questions
+# Slides, Lab Docs and Code
 
-* General questions - ask during the open frame, NOT during the lecture (write it down to remember later)
-* Specific questions (why XYZ is not working on my computer!?) - ask during labs
+* Slides are often just talking points 
+* Lab docs have detailed step by step walk-throughs
+* Code  (`code` folder) has all scripts - use them for accuracy
+
+PS: You'll download all this courseware soon in Lab 0 / Pre-requisites
+
+^because reading from slides is boring so pay attention and take notes!
+
+---
+
+# General questions
+
+Example: *How CloudFormation is different from OpsWorks?*
+
+Google first, if it takes more than 3 min to find the answer then ask in the comments section or on NodeU Slack.
+
+---
+
+
+# Specific questions
+
+Example: *Why XYZ is not working on my computer!?* 
+
+Google and search on Stackovreflow first, then ask in the comments section or on the azat-co/aws-intermediate GitHub,  or on NodeU Slack.
 
 ---
 
@@ -93,7 +113,8 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 * DevOps and Infrastructure as code
 * Identity Access Management in AWS
-* Connecting Resources and IAM, Extra Services and Best Practices
+* Best IAM Practices
+* Configuring access with AWS CLI
 * Working with AWS CLI
 * Lab 1: Install AWS CLI, configure, create an instance
 
@@ -102,6 +123,7 @@ Multitasking does NOT work (for work which requires focus)[^1]
 # Module 2: AWS SDKs
 
 * Advantages of AWS SDKs
+* Configuring access with Node SDK
 * Node SDK Example
 * Lab 2: Write a Node script to create an instance and run it
 
@@ -109,45 +131,39 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 # Module 3: Cloud Infrastructure Automation with CloudFormation
 
-* CloudFormation advantage
-* CloudFormation structure
-* Demo: CloudFormation example and AWS CLI
-* Demo: CloudFormation visual web editor
+* CloudFormation (CF) advantage
+* CF structure: Parameters, Resources, Mapping and other
+* CF functions
 * Lab 3: Create an ELB and auto scaling environment from CloudFormation template/blueprint
 
 ---
 
 # Module 4: Building CI/CD
 
-* CodeDeploy with S3 and GitHub
-* CodeDeploy and CodePipeline
-* Demo: Building CI with GitHub
-* Lab 4: Build CI with CodeDeploy
-
+* CI/CD Workflow
+* CodeDeploy 
+* CodePipeline
+* Lab 4: Build CI with CodeDeploy, CodePipeline and GitHub
 
 ---
 
 # Module 5: AWS Databases
 
-* RDS
-* DynamoDB
-* Creating a database instance
-* IAM Role
+* Overview of RDS, DynamoDB and other services
 
 ---
 
 # Module 6: PaaS and Containers
 
-* Working with ElasticBeanstalk
-* Working with Docker: EC2, ECS and Elastic Beanstalk Containers
+* Overview of AWS Elastic Beanstalk
+* Overview of Docker in AWS: EC2, ECS and Elastic Beanstalk Containers
 
 ---
 
-# Module 7: Serverless
+# Module 7: Serverless with AWS Lambda
 
-* Serverless with AWS Lambda
-* Demo: Building Microservice with Lambda and API Gateway
-* Lab 5: Create a lambda CRUD microservice to save data in DB
+* AWS Lambda use cases and benefits
+* Lab 5: Create a lambda CRUD microservice to CRUD data in DynamoDB
 
 ---
 
@@ -161,7 +177,7 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 ---
 
-# PS: 30-second summary of AWS Intro
+# Quickly Summary of AWS Intro
 
 ![inline](images/AWS-Intro.png)
 
@@ -169,7 +185,7 @@ Multitasking does NOT work (for work which requires focus)[^1]
 
 ---
 
-## Topics covered
+## AWS Intro Topics Covered
 
 * Cloud and AWS Basics
 * Launching EC2
