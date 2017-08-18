@@ -7,7 +7,7 @@ aws apigateway create-rest-api --name "${APINAME}" --description "Api for ${NAME
 APIID=$(aws apigateway get-rest-apis --query "items[?name==\`${APINAME}\`].id" --output text --region ${REGION})
 echo "API ID: ${APIID}"
 PARENTRESOURCEID=$(aws apigateway get-resources --rest-api-id ${APIID} --query "items[?path=='/'].id" --output text --region ${REGION})
-echo "Parent resource ID: ${APIID}"
+echo "Parent resource ID: ${PARENTRESOURCEI}"
 # Create a resource as a path, our function will handle many tables (resources) but you can be more specific
 aws apigateway create-resource --rest-api-id ${APIID} --parent-id ${PARENTRESOURCEID} --path-part ${API_PATH} --region ${REGION}
 RESOURCEID=$(aws apigateway get-resources --rest-api-id ${APIID} --query "items[?path=='/db-api'].id" --output text --region ${REGION})
