@@ -15,6 +15,10 @@ Azat Mardan @azat_co
 
 ---
 
+# Module 1: DevOps Principles
+
+---
+
 ## Why cloud?
 
 Refresher from the AWS Intro course. Yell out loud the cloud computing benefits! 🔊
@@ -126,7 +130,7 @@ Whitepaper: pdfs/AWS_Well-Architected_Framework.pdf
 ---
 
 
-# Main Principles
+# Main DevOps Principles
 
 * Automate everything
 * Version: define infrastructure as code and store in version control system (like app code)
