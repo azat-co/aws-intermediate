@@ -9,31 +9,28 @@ Task: Install AWS CLI, configure, create an instance with apache httpd via AWS C
 
 If you would like to attempt the task, then skip the walk-through and go for the task directly. However, if you need a little bit more hand holding or you would like to look up some of the commands or code or settings, then follow the walk-through.
 
-1. Form user data
+1. Create user data
 3. Create security group
 3. Create key pair
 4. Find AMI ID (instance ID)
 5. Launch instances
 6. Get public IP and test
+7. Terminate your instance
 
 All commands have been designed for us-west-1. If you are using a different region, you need to modify accordingly. For example, your AMI ID will be different.
 
 And yes, please do NOT use the AWS web console. You may logout from there now.
 
-You can run commands manually or create a shell script which automates the whole process (recommended). To run a shell script, you just need to execute:
+This tutorial (lab) will walk you through creation of the EC2 (like a VM) instance running a web server.
 
-```
-sh ./provision-hello-world.sh
-```
+## 1. Create user data
 
-## 1. Form user data
-
-To be able to run HTTP server on an instance to which you don't have an SSH access, you will need to automate the installation of two things: 
+To be able to run HTTP server on an instance to which you don't have an SSH access, you will need to automate the installation of two things:
 
 * Apache httpd web server
 * HTML page with Hello World
 
-Both of the items can be put in User Data which will be run once on the instance launch. 
+Both of the items can be put in User Data which will be run once on the instance launch.
 
 You can see below an example of how your user data might look like. If you copy from here, make sure you do NOT have syntax issues and include the shebang sign (`#`):
 
@@ -51,11 +48,12 @@ echo "<html>
 </html>" > /var/www/html/index.html
 ```
 
-Feel free to be creative and edit the HTML code. For example,
+Feel free to be creative and edit the HTML code. For example, put `<p>Hello San Francisco</p>` inside `<html>`:
 
 ```
 echo "<html>
 <h1>This is my cool HTML page. I'm a web developer now.</h1>
+<!-- ANY HTML CODE -->
 </html>" > /var/www/html/index.html
 ```
 
@@ -112,7 +110,7 @@ For example, here's [a Marketplace search result for Amazon Linux AMIs](https://
 
 ## 5. Launch instances
 
-Navigate to the folder in which you have user data saved in file (e.g., httpd-hello-user-data.sh). Now you can launch an instance (or two) using user data and the security group you created. The user data will be fed from a file using `file://` syntax. You can fetch user data from the internet using http as well.
+Navigate to the folder in which you have user data saved in file (e.g., `httpd-hello-user-data.sh`). Now you can launch an instance (or two) using user data and the security group you created. The user data will be fed from a file using `file://` syntax. You can fetch user data from the internet using http as well.
 
 ```
 aws ec2 run-instances --image-id ami-7a85a01a \
@@ -123,11 +121,19 @@ aws ec2 run-instances --image-id ami-7a85a01a \
 
 Write down (or copy) the instance ID which will have the following format (your ID will differ in the value): `i-0ca91f9842b88d206`. You won't see the public IP right away. It'll take a few minutes... for this reason, wait a little bit and run command to pull the list of instances.
 
+## 6. Get public IP and test
+
 ```
 aws ec2 describe-instances --instance-ids i-0ca91f9842b88d206
 ```
 
-If you only have a single (or only a few) instance(s), then you can run `aws ec2 describe-instances` without IDs. 
+Or better version that will give you only the public DNS name (URL):
+
+```
+aws ec2 describe-instances --instance-ids i-062a31c9354096c43 --query 'Reservations[*].Instances[*].PublicDnsName'
+```
+
+If you only have a single (or only a few) instance(s), then you can run `aws ec2 describe-instances` without IDs.
 If you have many instances, provide the ID which you saved (you did save it, right?) from `run-instances`:
 
 ```
@@ -136,14 +142,22 @@ aws ec2 describe-instances --instance-ids i-0ca91f9842b88d206
 
 Copy the PublicDnsName. If you don't see it, make sure the status is 16: running. Also, double check the security group.
 
-## 6. Get public IP and test
+Paste the public URL (DNS name) into your favorite browser. Observe the HTML page. If you didn't modify the HTML, you will see "This is my cool HTML page". If you don't see anything (connection error), then wait 1-2 more minute and/or check in the instance with `describe-instances` or AWS console.
 
-Paste the public URL (DNS name) into your favorite browser. Observe the HTML page. If you didn't modify the HTML, you will see "This is my cool HTML page"
+## 7. Terminate your instance
 
-Terminate your instance. You can use `terminate-instances`. For example, 
+Terminate your instance. You can use `terminate-instances`. For example,
 
 ```
 aws ec2 terminate-instances --instance-ids i-0ca91f9842b88d206
+```
+
+# Script
+
+You can run the commands shown before one by one manually or create a shell script which automates the whole process (recommended). To run a shell script which I put in `code/provision-hello-world.sh`, you just need to execute:
+
+```
+sh ./provision-hello-world.sh
 ```
 
 # Troubleshooting

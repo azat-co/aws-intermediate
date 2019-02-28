@@ -454,6 +454,27 @@ Default output format [None]: json
 
 ---
 
+# Test
+
+```
+aws ec2 describe-regions
+```
+
+```js
+{
+    "Regions": [
+        {
+            "Endpoint": "ec2.eu-north-1.amazonaws.com",
+            "RegionName": "eu-north-1"
+        },
+        {
+            "Endpoint": "ec2.ap-south-1.amazonaws.com",
+            "RegionName": "ap-south-1"
+        },
+```
+
+---
+
 # Getting Help
 
 ```
@@ -461,6 +482,7 @@ aws help
 aws ec2 help
 aws ec2 describe-regions help
 ```
+
 
 ---
 
@@ -600,6 +622,15 @@ aws iam create-access-key --user-name MyUser
 # Getting Started with AWS CLI
 
 ```
+aws ec2 describe-instances
+aws ec2 run-instances
+awc ec2 create-images
+aws ec2 describe-images
+```
+
+Each command can use `help`
+
+```
 aws ec2 describe-instances help
 aws ec2 run-instances help
 awc ec2 create-images help
@@ -611,7 +642,7 @@ aws ec2 describe-images help
 # Launch Instance
 
 1. Get image ID
-1. Run command
+1. Execute `run-instances` command using image ID
 
 ---
 
@@ -680,7 +711,22 @@ Example of Amazon Linux AMI 2016.09.1 (HVM), SSD Volume Type Output:
 
 ---
 
-# Run instances is really launch instances (or create)
+# --query
+
+```
+aws ec2 describe-images --owners amazon \
+  --filters "Name=virtualization-type,Values=hvm" "Name=root-device-type,Values=ebs" \
+  "Name=name,Values=amzn-ami-hvm-2016.09.1.20170119-x86_64-gp2" --query 'Images[*].ImageId'
+[
+    "ami-165a0876"
+]
+```
+
+---
+
+# Run = Launch
+
+Running instances is really launch instances (or creating them), i.e., Run in CLI = Launch in Console
 
 ```
 aws ec2 run-instances --image-id ami-xxxxxxxx \
@@ -691,7 +737,6 @@ aws ec2 run-instances --image-id ami-xxxxxxxx \
 Note: You need to have security group first (if you don't have it).
 
 ---
-
 
 # Run (Launch) instances with subnet:
 
@@ -884,7 +929,7 @@ More info on User Data:
 
 Task: Install AWS CLI, configure, create an instance with apache httpd via AWS CLI and no SSH, and then make the HTML page (hello world) visible in the browser *publicly*
 
-Detailed instructions and links are in labs/1-hello-world-aws-cli.md
+Detailed instructions and links are in `labs/1-hello-world-aws-cli.md` ([view on GitHub](https://github.com/azat-co/aws-intermediate/blob/master/labs/1-hello-world-aws-cli.md))
 
 
 Time to finish: 15 min 👾
@@ -1642,8 +1687,8 @@ Any ideas? Just say out loud.
 # Simple Flow
 
 1. Code committed to bucket, repository, folder, etc.
-1. Event is issued (eg., a webhook)
-1. Code is deployed
+2. Event is issued (eg., a webhook)
+3. Code is deployed
 
 ---
 
