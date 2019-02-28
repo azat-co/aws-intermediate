@@ -1,4 +1,4 @@
-footer: © NodeProgram.com, Node.University and Azat Mardan 2017
+footer: © NodeProgram.com, Node.University and Azat Mardan
 slidenumbers: true
 theme: Simple, 1
 build-lists: true

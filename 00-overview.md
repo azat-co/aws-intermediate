@@ -1,8 +1,8 @@
-footer: © NodeProgram.com, Node.University and Azat Mardan 2017
+footer: © NodeProgram.com, Node.University and Azat Mardan
 theme: Simple, 1
 build-lists: true
 
-[.slidenumbers: false] 
+[.slidenumbers: false]
 [.hide-footer]
 
 ![fit](images/AWS-Intermediate.png)
@@ -71,14 +71,14 @@ Multitasking does NOT work (for work which requires focus)[^1]
 # Process
 
 * Lectures
-* Demos and lab demos 
+* Demos and lab demos
 * Hands-on labs with lab documents
 
 ---
 
 # Slides, Lab Docs and Code
 
-* Slides are often just talking points 
+* Slides are often just talking points
 * Lab docs have detailed step by step walk-throughs
 * Code  (`code` folder) has all scripts - use them for accuracy
 
@@ -99,7 +99,7 @@ Google first, if it takes more than 3 min to find the answer then ask in the com
 
 # Specific questions
 
-Example: *Why XYZ is not working on my computer!?* 
+Example: *Why XYZ is not working on my computer!?*
 
 Google and search on Stackovreflow first, then ask in the comments section or on the azat-co/aws-intermediate GitHub,  or on NodeU Slack.
 
@@ -141,7 +141,7 @@ Google and search on Stackovreflow first, then ask in the comments section or on
 # Module 4: Building CI/CD
 
 * CI/CD Workflow
-* CodeDeploy 
+* CodeDeploy
 * CodePipeline
 * Lab 4: Build CI with CodeDeploy, CodePipeline and GitHub
 

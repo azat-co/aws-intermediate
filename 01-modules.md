@@ -1,4 +1,4 @@
-footer: © NodeProgram.com, Node.University and Azat Mardan 2017
+footer: © NodeProgram.com, Node.University and Azat Mardan
 slidenumbers: true
 theme: Simple, 1
 build-lists: true
@@ -2098,7 +2098,7 @@ Task:  Create a microservice with AWS Lambda (public endpoint) to CRUD data to/f
 
 Detailed instructions and links are in labs/5-serverless.md
 
-Time to finish: 20 min 
+Time to finish: 20 min
 
 ---
 
