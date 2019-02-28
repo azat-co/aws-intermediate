@@ -7,7 +7,7 @@ build-lists: true
 ## All you need to know to start DevOps with AWS
 
 ![inline 100%](images/azat.jpeg)
-Azat Mardan @azat_co
+Azat Mardan [@azatmardan](https://twitter.com/azatmardan)
 
 ![inline right](images/nu.png)
 

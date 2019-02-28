@@ -8,7 +8,7 @@ build-lists: true
 ## Outro
 
 ![inline 100%](images/azat.jpeg)
-Azat Mardan @azat_co
+Azat Mardan [@azatmardan](https://twitter.com/azatmardan)
 
 ![inline right](images/nu.png)
 

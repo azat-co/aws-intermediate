@@ -13,7 +13,7 @@ build-lists: true
 ## Overview
 
 ![inline 100%](images/azat.jpeg)
-Azat Mardan @azat_co
+Azat Mardan [@azatmardan](https://twitter.com/azatmardan)
 
 ![inline right](images/nu.png)
 
@@ -36,7 +36,7 @@ Azat Mardan @azat_co
 
 * Master of Science in Information Systems Technology from University of Northern Virginia (2007)
 * Working on my second Master's degree, this time in Software Engineering and from Harvard University
-* Twitter: @azat_co, Online: <http://azat.co>
+* Twitter: [@azatmardan](https://twitter.com/azatmardan), Online: <http://azat.co>
 
 ---
 
