@@ -63,7 +63,7 @@ const port = process.env.PORT || 3000
 require('http')
   .createServer((req, res) => {
     console.log('url:', req.url)
-    res.end('hello world')
+    res.end('hello world') // CHANGE TEXT HERE
   })
   .listen(port, (error)=>{
     console.log(`server is running on ${port}`)
@@ -82,7 +82,7 @@ Or if you want to specify a different port instead of 3000, then you can do so w
 sudo PORT=80 node hello-world-server-port.js
 ```
 
-Depending on the port number, you can test the response from the HTTP web server with the URLs like <http://localhost:3000> or <http://localhost> for 3000 and 80 correspondingly. 
+Depending on the port number, you can test the response from the HTTP web server with the URLs like <http://localhost:3000> or <http://localhost> for 3000 and 80 correspondingly.
 
 ## 3. Create Node script
 
@@ -108,7 +108,7 @@ For this lab, your goal is to launch an instance with automatic environment and 
 // Load the SDK for JavaScript
 const AWS = require('aws-sdk')
 // Load credentials and set region from JSON file
-// AWS.config.loadFromPath('./config.json')
+AWS.config.loadFromPath(path.join(__dirname,'config.json')) // TODO Populate config.json with your credentials
 
 // Create EC2 service object
 var ec2 = new AWS.EC2({apiVersion: '2016-11-15', region: 'us-west-1'})
@@ -119,7 +119,7 @@ var params = {
   MinCount: 1,
   MaxCount: 1,
   UserData: fs.readFileSync('./user-data.sh', 'base64'),
-  GroupIds: ['SECURITY_GROUP_ID']
+  SecurityGroups: ['http-sg-test']  // We created this in lab 1
 }
 
 // Create the instance
@@ -167,9 +167,15 @@ Tagging instance success
 
 ## 5. Test and terminate
 
-Wait a few moments (anywhere from 30seconds to 1-2 minutes) and get the public URL (DNS name) using the instance ID from step 4. (See lab 1 for how to do it; hint: `describe-instances`.)
+Wait a few moments (anywhere from 30seconds to 1-2 minutes) and get the public URL (DNS name) using the instance ID from step 4. See lab 1 for how to do it; hint: `describe-instances`. For example,
 
-Open the public URL in the browser and observe hello world.
+```
+aws ec2 describe-instances  --instance-ids i-0568aa7977913ea92 --query 'Reservations[*].Instances[*].PublicDnsName'
+```
+
+Open the public URL in the browser and observe "hello world" or your own text.
+
+Next, we shall text that the Node.js web server starts on the instance respawn/reboot.
 
 Reboot your instance using `reboot-instances` and instance ID. For example,
 
@@ -177,7 +183,7 @@ Reboot your instance using `reboot-instances` and instance ID. For example,
 aws ec2 reboot-instances --instance-ids i-04dd20a0983596f9c
 ```
 
-Terminate your instance using its ID.
+Terminate your instance using its ID and `aws ec2 terminate-instances`. For example, `aws ec2 terminate-instances --instance-ids i-062a31c9354096c43`.
 
 # Troubleshooting
 

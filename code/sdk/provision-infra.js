@@ -1,7 +1,8 @@
 // Load the SDK for JavaScript
+const path = require('path')
 const AWS = require('aws-sdk')
 // Load credentials and set region from JSON file
-// AWS.config.loadFromPath('./config.json')
+AWS.config.loadFromPath(path.join(__dirname,'config.json')) // TODO Populate config.json with your credentials
 
 // Create EC2 service object
 var ec2 = new AWS.EC2({apiVersion: '2016-11-15', region: 'us-west-1'})
@@ -11,8 +12,8 @@ var params = {
   InstanceType: 't2.micro',
   MinCount: 1,
   MaxCount: 1,
-  UserData: fs.readFileSync('./user-data.sh', 'base64'),
-  SecurityGroups: ['http-sg']
+  UserData: fs.readFileSync(path.join(__dirname,'user-data.sh'), 'base64'),
+  SecurityGroups: ['http-sg-test']  // We created this in lab 1
 }
 
 // Create the instance

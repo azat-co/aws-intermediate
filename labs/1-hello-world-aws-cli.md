@@ -152,6 +152,11 @@ Terminate your instance. You can use `terminate-instances`. For example,
 aws ec2 terminate-instances --instance-ids i-0ca91f9842b88d206
 ```
 
+Wait a little bit, then check the page again. The page should be unaccessible. Run `describe-instances` to check the instance again. It should have `State`  with `Code` 32 and `Name` is `shutting-down`.
+
+AWS doens't remove instances immediately. The process is asynchronous and takes a few minutes. 
+
+
 # Script
 
 You can run the commands shown before one by one manually or create a shell script which automates the whole process (recommended). To run a shell script which I put in `code/provision-hello-world.sh`, you just need to execute:
