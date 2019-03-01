@@ -319,13 +319,13 @@
     "CPUAlarmHigh": {
      "Type": "AWS::CloudWatch::Alarm",
      "Properties": {
-        "AlarmDescription": "Scale-up if CPU > 50% for 10 minutes",
+        "AlarmDescription": "Scale-up if CPU > 35% for 1 minute",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/EC2",
         "Statistic": "Average",
         "Period": "60",
         "EvaluationPeriods": "1",
-        "Threshold": "50",
+        "Threshold": "35",
         "AlarmActions": [ { "Ref": "WebServerScaleUpPolicy" } ],
         "Dimensions": [
           {
@@ -339,13 +339,13 @@
     "CPUAlarmLow": {
      "Type": "AWS::CloudWatch::Alarm",
      "Properties": {
-        "AlarmDescription": "Scale-down if CPU < 25% for 10 minutes",
+        "AlarmDescription": "Scale-down if CPU < 15% for 5 minute",
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/EC2",
         "Statistic": "Average",
         "Period": "60",
-        "EvaluationPeriods": "1",
-        "Threshold": "25",
+        "EvaluationPeriods": "5",
+        "Threshold": "15",
         "AlarmActions": [ { "Ref": "WebServerScaleDownPolicy" } ],
         "Dimensions": [
           {
