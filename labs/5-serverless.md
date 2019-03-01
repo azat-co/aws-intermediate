@@ -10,11 +10,9 @@ You'll build a REST API for all the tables not just one. As an example, you'll b
 * Lambda
 * API Gateway
 
-
 # Task
 
 Create a lambda CRUD microservice to save data in DB
-
 
 # Walk-through
 
@@ -85,6 +83,9 @@ aws dynamodb list-tables
 ## 2. Create IAM role to access DynamoDB
 
 
+
+Let's create an IAM role so our lambda can access DynamoDB. First, create a role with a trust policy from a file `code/serverless/lambda-trust-policy.json` which looks like tis:
+
 ```js
 {
   "Version": "2012-10-17",
@@ -103,7 +104,7 @@ aws dynamodb list-tables
 }
 ```
 
-Let's create an IAM role so our lambda can access DynamoDB. First, create a role with a trust policy from a file:
+I already created this policy file for you so you can just execute the following command from the same folder in which the policy file is located (`code/serverless`):
 
 ```sh
 aws iam create-role --role-name LambdaServiceRole --assume-role-policy-document file://lambda-trust-policy.json
@@ -138,7 +139,7 @@ If you are curious, the file has the lambda service identifier:
 }
 ```
 
-Write down the role Arn somewhere.
+Write down the role Arn somewhere. We'll need it later.
 
 Next, add the policies so the lambda function can work with the database:
 
@@ -202,7 +203,7 @@ exports.handler = (event, context, callback) => {
         case 'DELETE':
             dynamo.deleteItem(event.body, done)
             break
-        // No payload, just a query string param    
+        // No payload, just a query string param
         case 'GET':
             dynamo.scan({ TableName: event.queryStringParameters.TableName }, done)
             break
@@ -210,7 +211,7 @@ exports.handler = (event, context, callback) => {
         case 'POST':
             dynamo.putItem(event.body, done)
             break
-        // Table name and key are in payload   
+        // Table name and key are in payload
         case 'PUT':
             dynamo.updateItem(event.body, done)
             break
@@ -220,9 +221,9 @@ exports.handler = (event, context, callback) => {
 }
 ```
 
-So either copy or type the code into a file and archive it with ZIP into `db-api.zip`.
+So either copy or type the code into a file and archive it with ZIP into `db-api.zip`... or use my file located in `code/serverless
 
-Now we can create an AWS Lambda function from the source code. Use your IAM role Arn from the IAM step. The code for the function will come from a zip file. The handle is the name of the method in `index.js` for AWS to import and invoke.
+Now we can create an AWS Lambda function from the source code. **Use your IAM role Arn from the IAM step.** The code for the function will come from a zip file. The handle is the name of the method in `index.js` for AWS to import and invoke.
 
 ```
 aws lambda create-function --function-name db-api \
@@ -254,7 +255,7 @@ Results will look similar to this but with different IDs of course:
 }
 ```
 
-Test function with this data which mocks an HTTP request (`db-api-test.json` file):
+Next we can test the serverless lambda function (which is a server) by invoking it from the command line. To test the function with this data let's use the mock object of an HTTP request (`db-api-test.json` file):
 
 ```json
 {
@@ -265,7 +266,7 @@ Test function with this data which mocks an HTTP request (`db-api-test.json` fil
 }
 ```
 
-Run from a CLI (recommended) to execute function in the cloud:
+Run from a CLI (recommended) to execute function in the cloud by passing the payload from the JSON file:
 
 ```
 aws lambda invoke \
@@ -275,7 +276,16 @@ aws lambda invoke \
 output.txt
 ```
 
-Or testing can be done from the web console in Lambda dashboard (blue test button once you navigate to function detailed view):
+The successful result is:
+
+```
+{
+    "StatusCode": 200
+}
+```
+
+Later we will test by making a real HTTP request but right now we cannot because the HTTP endpoint/resource is not exposed yet.
+Alternatively, the testing can be done from the web console in Lambda dashboard (blue test button once you navigate to function detailed view):
 
 ![](../images/serverless-1.png)
 
@@ -296,7 +306,7 @@ The function is working and fetching from the database.  You can test other HTTP
   "body": {
     "TableName": "messages",
     "Item":{
-       "id":"1",       
+       "id":"1",
        "author": "Neil Armstrong",
        "text": "That is one small step for (a) man, one giant leap for mankind"
     }
@@ -309,15 +319,15 @@ The function is working and fetching from the database.  You can test other HTTP
 You will need to do the following:
 
 1. Create REST API in API Gateway
-1. Create a resource (i.e, `/db-api`, e.g.,`/users`, `/accounts`)
-1. Define HTTP method(s) without auth
-1. Define integration to Lambda (proxy)
-1. Create deployment
-1. Give permissions for API Gateway resource and method to invoke Lambda
+2. Create a resource (i.e, `/db-api`, e.g.,`/users`, `/accounts`)
+3. Define HTTP method(s) without auth
+4. Define integration to Lambda (proxy)
+5. Create deployment
+6. Give permissions for API Gateway resource and method to invoke Lambda
 
-The process is not straightforward. Thus, you can use a shell script which will perform all the steps (recommended) or web console.
+The process is not straightforward. Thus, you can use a shell script that I created for automation and convenience, the script which will perform all the steps (recommended) or web console.
 
-The shell script is in the `create-api.sh` file. It has inline comments to help you understand what is happening. Feel free to inspect `create-api.sh`. For brevity and to avoid clutter, the file is not copied into this document.
+The shell script is in the `create-api.sh` file. Open it and study thoroughly to make sure you understand everything it's doing and you are comfortable executing this script in your AWS account. The script has inline comments to help you understand what is happening. Feel free to inspect `create-api.sh`. For brevity and to avoid clutter, the file is not copied into this document.
 
 Run this command to create the API endpoint and integrate it with Lambda function (if you modified the region or the function name, you'll need to change those values in script as well):
 
@@ -375,11 +385,11 @@ Testing...
 {"Items":[],"Count":0,"ScannedCount":0}%
 ```
 
-You are all done!
+You are all done! Write down your API URL.
 
 ## 5. Test
 
-You can then manually run tests by getting resource URL and using cURL, Postman or any other HTTP client. For example, my GET looks like this (replace the URL with yours):
+You can then manually run tests by getting resource URL and using cURL, Postman or any other HTTP client. For example, my GET looks like this. **Replace** the URL with yours:
 
 ```sh
 curl "https://sdzbvm11w6.execute-api.us-west-1.amazonaws.com/prod/db-api/?TableName=messages"
@@ -435,6 +445,20 @@ The new items can be observed via HTTP interface by making another GET request..
 
 ![](../images/serverless-db.png)
 
+```sh
+curl "https://6dm4p72g6e.execute-api.us-west-1.amazonaws.com/prod/db-api/?TableName=messages" \
+  -X PUT \
+  -H "Content-Type: application/json" \
+  -d '{"TableName": "messages",
+    "Key": {"id": "17CC9873-A971-4622-A272-48CB04DFE00A"},
+    "UpdateExpression": "set author = :author, loc = :l",
+    "ExpressionAttributeValues": {
+      ":author": "Azat Mardan",
+      ":l": "San Francisco"
+    },
+    "ReturnValues":"UPDATED_NEW"
+  }'
+```
 
 Yet another option to play with your new REST API resource. A GUI Postman. Here's how the POST request looks like in Postman. Remember to select POST, Raw and JSON (application/json):
 
