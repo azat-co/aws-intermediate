@@ -727,6 +727,11 @@ Now that you know what steps are involved, you can create a CloudFormation file 
 
 Don't forget to remove your EC2 instance and other pipeline resources by rolling back the stack. Otherwise your AWS bill will be costly next month. :)
 
+
+## 7. Automate Automation (Bonus)
+
+You did great work. Now your deployment is automated. But the best practice is to replicate this infrastructure in a new region. Also, you'll have more than one app, server, website or service. Let's automate all the steps in this lab. Make it a one shell script (bash or zsh) that takes some parameters like GitHub token and GitHub user/organization, repository and does all 6 steps automatically. You can use `echo` to display steps and `aws wait` for script to wait until the stack is ready. You can also create variable to store IDs and Arns and pass then to other commands just like I did in lab 1 in `provision-hello-world.sh`.
+
 # Troubleshooting
 
 * Cannot see Hello World on the deployed public URL. Go to your pipeline view from [pipeline dashboard](https://us-west-2.console.aws.amazon.com/codepipeline/home?region=us-west-2#/dashboard), e.g., [node-app-pipeline view](https://us-west-2.console.aws.amazon.com/codepipeline/home?region=us-west-2#/view/node-app-pipeline). See if you have failed deploy. By clicking on failed deploy you can see logs of each script like BeforeInstall.
