@@ -165,6 +165,10 @@ Created instance i-04dd20a0983596f9c
 Tagging instance success
 ```
 
+You can check instances with `describe-instances` or you can also double check the instances in the console.
+
+![](../images/aws-sdk-instances.png)
+
 ## 5. Test and terminate
 
 Wait a few moments (anywhere from 30seconds to 1-2 minutes) and get the public URL (DNS name) using the instance ID from step 4. See lab 1 for how to do it; hint: `describe-instances`. For example,
@@ -174,6 +178,8 @@ aws ec2 describe-instances  --instance-ids i-0568aa7977913ea92 --query 'Reservat
 ```
 
 Open the public URL in the browser and observe "hello world" or your own text.
+
+
 
 Next, we shall text that the Node.js web server starts on the instance respawn/reboot.
 
