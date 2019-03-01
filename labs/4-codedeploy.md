@@ -226,7 +226,7 @@ Important! **Instead of my service role Arn, insert yours from the CodeDeploy se
 aws iam get-role --role-name CodeDeployServiceRole --query "Role.Arn" --output text
 ```
 
-Then replace the Arn in my example and run `create-deployment-group`:
+If you are working on a shared account with other students (people taking this course), then replace the EC2 tag value with your name. This will help you to identify your instances from everyone elses. Also, replace the Arn in my example and run `create-deployment-group`:
 
 ```
 aws deploy create-deployment-group --application-name Node_App \
@@ -371,7 +371,9 @@ Create a bucket to store artifacts for the pipeline. Be careful with the name. I
 aws s3 mb s3://node-app-pipeline-bucket-346128301596 --region us-west-2
 ```
 
-You will need a role for the pipeline. It will need to have two things: trust policy and inline policy.
+Save the bucket name somewhere. We'll need it in the future.
+
+Next, you will need a role for the pipeline. It will need to have two things: trust policy and inline policy.
 
 First, create a role with the trust policy document from a file. This is the trust policy document:
 
@@ -440,13 +442,15 @@ Get GitHub token. You will feed it to AWS CLI. Personal access token will be jus
 
 ![](../images/github-oauth-token.png)
 
-Copy the token. When the GitHub access token exists, add and verify that it has enough permissions. My repo is public so I only have checked the access to `public_repo`, `repo:status` and `repo_deployment` in my GitHub access token's setting. You can copy my settings if your repository is public.
+Enter the name and select the minimal number of permissions. My repo is public so I only have checked the access to `public_repo`, `repo:status` and `repo_deployment` in my GitHub access token's setting. You can copy my settings if your repository is public. Copy the token. You will NOT see it again. When the GitHub access token exists, add and verify that it has enough permissions.
 
 Obviously, if your repository is private, you'll need to give access to CodePipeline via the personal access token setting `repo`. See more details about settings (GitHub's OAuth scopes) at [GitHub documentation for OAuth scopes.](https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-scopes-for-oauth-apps)
 
 ![](../images/github-oauth-token-2.png)
 
 Do you still have the GitHub token? Now you need to create a file which will configure the pipeline. Here's my example of the CodePipeline structure which is also in the `node-app-pipeline.json`. **Remember, you'll need to replace a few values listed below the JSON**.
+
+Beware, not to save this file into you code repository because it'll contain the access token.
 
 ```
 {
@@ -521,35 +525,37 @@ The structure has two stages: source and deploy. You can keep adding more stages
 **IMPORTANT:** You should at the very least replace the following because create-pipeline CLI won't create them for you. So you need to have CodePipeline service IAM role and the S3 bucket created first.
 
 * `artifactStore`, S3 bucket name for the bucket in the same region, e.g., my value is `codepipeline-us-west-2-346128301595`
-* `roleArn`, the IAM role which has the inline policies for the CodePipeline, e.g., `arn:aws:iam::161599702702:role/CodePipelineServiceRole`
+* `roleArn`, the IAM role which has the inline policies for the CodePipeline, e.g., `arn:aws:iam::161599702702:role/CodePipelineServiceRole` (not `CodeDeployServiceRole`!)
 * `OAuthToken`: your GitHub Access OAuth token (personal or from an app)
 
-Replace the source code repository values:
+Also you **must** replace the source code repository values:
 
 * `Owner`: your GitHub username, must be just a string, e.g., "azat-co"
 * `Repo`: your GitHub repository, must be just the name, not a URL, e.g., "codedeploy"
 * `Branch`: your GitHub repository branch, just a string, e.g., "master"
 
-You might need to modify other values depending on what values you used in the previous steps of this lab. Here's the list of the values which you need to **replace, verify and modify**:
+These next items are optional. You *might* need to modify other values depending on what values you used in the previous steps of this lab. Here's the list of the values which you need to **replace, verify and modify**:
 
 * `name`: arbitrary name
 * `ApplicationName`: your application name from CodeDeploy, e.g., `Node_App`
 * `DeploymentGroupName`: your deployment group name from CodeDeploy step, e.g., `NodeCD_DG`
 
 
-Once you've gotten your JSON pipeline structure with your own values and have saved it in some file (e.g., `pipeline.json`), create a pipeline with AWS CLI. Simply run the command below to create a new pipeline, but of course verify and replace the file name `pipeline.json` if needed:
+Once you've gotten your JSON pipeline structure with your own values and have saved it in some file (e.g., `pipeline.json`). Create a pipeline with AWS CLI. Simply run the command below to create a new pipeline, but of course verify and replace the file name `pipeline.json` if needed:
 
 ```
 aws codepipeline create-pipeline --cli-input-json file://pipeline.json
 ```
 
-More info: <http://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines.html>
 
-Some useful commands:
+The result of the command will be printed as the JSON file you supplied.
+
+More info: <http://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines.html>.
+
+If you need to update your pipeline (maybe you forgot to put your role or GitHub token), then use this command:
 
 ```
 aws codepipeline update-pipeline --cli-input-json file://pipeline.json
-aws codepipeline start-pipeline-execution --name node-app-pipeline
 ```
 
 Funny thing is that even [AWS docs recommend creating pipeline structure from existing pipelines](http://docs.aws.amazon.com/codepipeline/latest/userguide/pipelines-create.html#pipelines-create-cli-json). You can export a pipeline JSON from an existing pipeline with this command:
@@ -559,6 +565,29 @@ aws codepipeline get-pipeline --name node-app-pipeline
 ```
 
 Of course, it's of little use if you are creating the first pipeline. However, there's a web wizard which is as an alternative to AWS CLI. In some ways, web wizard will do more things for you (like making sure the role is the right one), but the downside is that with the web wizard is harder to automate than a series of shell scripts.
+
+
+You can verify the pipeline in AWS console. This is the new look:
+
+![](../images/pipeline-new-console.png)
+
+Of course, we can check the status from the CLI (or SDK). For example
+
+```
+aws codepipeline list-pipelines
+aws codepipeline  get-pipeline-state --name node-app-pipeline
+```
+
+To (re)start the pipeline, use:
+
+```
+aws codepipeline start-pipeline-execution --name node-app-pipeline
+```
+
+Everytime there's a change in code or you restart the pipeline automatically, there would be a new deploy. Yay!
+
+The next section is doing the same creation of the pipeline but from the console. You can skip it and go to testing.
+
 
 ### 5.1. CodePipeline via Web Console (option B)
 
@@ -599,22 +628,104 @@ It shows you the GitHub hash of the commit, and status of the deployment. The fi
 
 ## 6. Test CI
 
-Once deploy is done without error as shown in the deploy web console, you can grab the public URL and verify that you can see Hello World HTML in the browser.
+Now the last and the funniest and the most awesome part of this long lab. We will find out the server URL (public DNS name) and test out rapid automatic deployment by pushing new code to GitHub.
+
+First, we have many options to find out the server URL. Let's start with CLI commands. This command will list all running instances' DNS names:
+
+```
+aws ec2 describe-instances --filter 'Name=instance-state-code,Values=16' --query 'Reservations[*].Instances[*].PublicDnsName'
+```
+
+If we have too many insances under this account in this region, then let's use deployment group to find out the instance ID. First, pick a deployment ID
+
+```
+aws deploy list-deployments
+```
+
+You'll get something like
+
+```
+{
+    "deployments": [
+        "d-DSCWW6FEY"
+    ]
+}
+```
+
+Then get associated instances with:
+
+```
+aws deploy list-deployment-instances --deployment-id d-DSCWW6FEY
+```
+
+```
+{
+    "instancesList": [
+        "i-0b943cfcc3d1be85e"
+    ]
+}
+```
+
+Then you can get DNS:
+
+```
+ aws ec2 describe-instances --filter 'Name=instance-state-code,Values=16' --query 'Reservations[*].Instances[*].PublicDnsName' --instance-ids "i-0b943cfcc3d1be85e"
+```
+
+It'll look like this:
+
+```
+[
+    [
+        "ec2-18-236-149-85.us-west-2.compute.amazonaws.com"
+    ]
+]
+```
+
+If you have a lot of other instances, filter them by EC2 tags (which you set when creating deployment group): `tag-value` and `tag-key` in `--filter`.
+
+Another way to find out the URL is via the AWS console. Once deploy is done without error as shown in the deploy web console, you can grab the public URL and verify that you can see Hello World HTML in the browser.
 
 ![](../images/pipeline-success.png)
 
-Go to your GitHub repository and modify `server.js` by changing Hello World text. You can use code editor and git CLI to commit and push or use GitHub web interface. If you are using GitHub website, you can commit right to master from there, see below:
+**Now let's make some code changes.** Go to your GitHub repository and modify `server.js` by changing Hello World text or adding a new tag or doing whatever if you know Node (take my course on Node at <https://node.university>).
+
+```js
+const port = process.env.PORT || 80
+require('http')
+  .createServer((req, res) => {
+    console.log(`incoming url: ${req.url} and incoming method: ${req.method}`)
+    res.writeHeader(200,{'Content-Type': 'text/html'})
+    res.write('<p>Buenos dias Montevideo</p>') // YOU CAN KEEP ADDING NEW HTML HERE with res.write()
+    res.end('<h1>Hello World from amazing Node University course AWS Intermediate</h1>')
+  })
+  .listen(port, (error)=>{
+    console.log(`server is running on ${port}`)
+  })
+```
+
+You can use GitHub web editor or just use your local code editor and git CLI to commit and push instead of using the GitHub web interface. If you are using GitHub website, you can commit right to master from there, see below:
 
 
 ![](../images/github-edit.png)
 
+Verify that Pipeline started the deploy. If you look at the pipeline right away, you'll see that source is picked up the changes but the staging is not ready yet.
 
+![](../images/pipeline-test-1.png)
 
-Verify that Pipeline started the deploy. Wait and verify that your new text appears on the public website. You can monitor the stages and progress in the CodePipeline web dashboard.
+Wait and verify that your new text appears on the public website. After a few seconds or minutes, you'll see that the staging is ready (green):
+
+![](../images/pipeline-test-2.png)
+
+You can monitor the stages and progress in the CodePipeline web dashboard.
+
+Now, go to the the URL (mine stayed the same but you can get the public DNS from the EC2 instance from the deploy group). See the new changes.
 
 Congratulations. 👏 You've created a CI with ability extend to CD (add builds!) in just under a half-hour or so.
 
 Now that you know what steps are involved, you can create a CloudFormation file which will create the steps 2, 3 and 5 in this labs in one command (stack/instances, CodeDeploy and Pipeline). In other words, you will be able to just run `aws cloudformation create-stack...`. Take a look at [this example](https://github.com/andreaswittig/codepipeline-codedeploy-example/blob/master/deploy/stack.yml) in which all you need is just run `setup.sh` (for more details, see [GitHub readme.md](https://github.com/andreaswittig/codepipeline-codedeploy-example)).
+
+Don't forget to remove your EC2 instance and other pipeline resources by rolling back the stack. Otherwise your AWS bill will be costly next month. :)
 
 # Troubleshooting
 
