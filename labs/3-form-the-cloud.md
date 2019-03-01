@@ -16,6 +16,7 @@ Create an ELB, security group and auto scaling environment from CloudFormation t
 If you would like to attempt the task, then skip the walk-through and go for the task directly. However, if you need a little bit more hand holding or you would like to look up some of the commands or code or settings, then follow the walk-through.
 
 1. Create a CloudFormation blueprint
+1. Create SSH Key Pair
 1. Launch stack from blueprint
 1. Install load testing tool
 1. Load/Stress test the instances in the stack
@@ -454,7 +455,18 @@ The provided `NodeAutoScalingMultiAZWithNotifications.json` blueprint creates th
 }
 ```
 
-## 2. Launch the Stack from a Blueprint
+## 2. Create SSH Key Pair
+
+SSH Key Pair will allow you to SSH into EC2 instances. You can create a key pair in AWS console or with AWS CLI. Use name `azat-aws-course`:
+
+```
+aws ec2 create-key-pair --key-name azat-aws-course
+```
+
+The output is an ASCII version of the private key and key fingerprint. You need to save "KeyMaterial" into to a file with `*.pem` extension, e.g., MyKeyPair.pem. For more information, see [Using Key Pairs](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-keypairs.html) in the AWS Command Line Interface User Guide.
+
+
+## 3. Launch the Stack from a Blueprint
 
 
 The JSON CloudFormation is in `code/cloudformation` so navigate there:
@@ -463,14 +475,14 @@ The JSON CloudFormation is in `code/cloudformation` so navigate there:
 cd code/cloudformation
 ```
 
-You can use table format by providing env var. The CF blueprint is supplied from a file. It has Node installation and take the app code from GitHub Gist (See UserData in `NodeAutoScalingMultiAZWithNotifications.json` for more details). Modify SSH key pair value (must exist) and email before running this command.
+You can use table format by providing env var. The CF blueprint is supplied from a file. It has Node installation and take the app code from GitHub Gist (See UserData in `NodeAutoScalingMultiAZWithNotifications.json` for more details). Modify SSH key pair value (must exist) and email before running this command. Replace `YOUR_EMAIL` with your email:
 
 ```
 AWS_DEFAULT_OUTPUT="table" aws cloudformation create-stack --stack-name autoscale-stack \
   --template-body file://NodeAutoScalingMultiAZWithNotifications.json \
   --parameters ParameterKey=KeyName,ParameterValue=azat-aws-course \
   ParameterKey=InstanceType,ParameterValue=t2.micro \
-  ParameterKey=OperatorEMail,ParameterValue=hi@azat.co
+  ParameterKey=OperatorEMail,ParameterValue=YOUR_EMAIL
 ```
 
 The current CF blueprint's User Data pulls Node app source code from gist and it looks like this with a `for` loop to eat up as much CPU as possible on every request. 80 is the default HTTP port and it's open in the CF blueprint's security group. Feel free to modify the app code as needed, but Node is very efficient—that's why there's a loop. Otherwise it'll be very hard to test our autoscaling.
@@ -498,6 +510,8 @@ Here's the example of the output when AWS accepted the `create-stack` command. Y
 |  StackId|  arn:aws:cloudformation:us-west-1:161599702702:stack/myteststack/db401e20-26c3-11e7-a874-50a686e19fe6   |
 +---------+---------------------------------------------------------------------------------------------------------+
 ```
+
+The following command shows list of all stacks on this region and forces JSON output:
 
 ```
 AWS_DEFAULT_OUTPUT="json" aws cloudformation list-stacks
@@ -539,7 +553,25 @@ Wait for `"StackStatus": "CREATE_COMPLETE"`, then get resources with:
 aws cloudformation list-stack-resources --stack-name autoscale-stack
 ```
 
-Copy the public URL from the Outputs. For example:
+CloudFormation doesn't know about the running EC2 instances. We need to pull instances or load balancers. To pull running instances, execute another command to pull the public DNS name:
+
+```
+aws ec2 describe-instances --filter 'Name=instance-state-code,Values=16' --query 'Reservations[*].Instances[*].PublicDnsName'
+```
+
+To see a list of LBs:
+
+```
+aws elb describe-load-balancers
+```
+
+To get instances by LB ID:
+
+```
+aws elb describe-instance-health --load-balancer-name autoscale-ElasticL-YM222HKF33TW
+```
+
+The LB DNS will have ID and the account number in the URL:
 
 ```
 ...
@@ -552,6 +584,8 @@ Copy the public URL from the Outputs. For example:
        ],
 ...
 ```
+
+Copy the public URL from the Outputs.
 
 Note: If you need to delete stack, run:
 
@@ -569,7 +603,7 @@ Most importantly, you want to grab the ELB address and testing the Hello World a
 
 You can get the same URL from the Load Balancers view of the EC2 dashboard (or with CLI of course).
 
-## 3. Install Load Testing Tool
+## 4. Install Load Testing Tool
 
 Now, you can install the stress/load testing tool. You can use Apache ab, JMeter, but since we have a Node server, why not use a Node-based tool? You can install and stress test from another EC2 instance, but you can do it locally from your dev machine as well.
 
@@ -587,7 +621,7 @@ loadtest --version
 
 You are all set.
 
-## 4. Load/Stress test the instances in the stack
+## 5. Load/Stress test the instances in the stack
 
 You will need the public URL of the Elastic Load Balancer. Put it in your command where `c` is concurrency and `rps` is request per second:
 
@@ -630,14 +664,13 @@ Finally once you've stopped the load test, feel free to wait for the low CPU ala
 
 ![](../images/lab3-alarm-elb.png)
 
-## 5. Terminate Stack
+## 6. Terminate Stack
 
 Terminate the stack with CLI or from the web console.
 
 ```
 aws cloudformation delete-stack --stack-name autoscale-stack
 ```
-
 
 # Troubleshooting
 
