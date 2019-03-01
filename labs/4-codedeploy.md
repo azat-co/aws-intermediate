@@ -30,6 +30,8 @@ If you would like to attempt the task, then skip the walk-through and go for the
 
 ## 1. Switch to us-west-2
 
+Becaus CodeDeploy was only available in `us-west-2` originally and not available in other regions, this tutorial uses `us-west-2`. So change AWS CLI to `us-west-2` using the following commands:
+
 ```
 aws configure
 AWS Access Key ID [****************4X4Q]:
@@ -42,15 +44,27 @@ Default output format [json]:
 
 The stack has instances with CodeDeploy agent, security groups, SSH key pairs, CloudWatch alerts and other things (details in codedeploy-cf-tpm-t2-hvm-3-ec2.json which has HVM and t2 type and is modeled after [CF t1 template ](http://s3-us-west-2.amazonaws.com/aws-codedeploy-us-west-2/templates/latest/CodeDeploy_SampleCF_Template.json), details  [here](http://docs.aws.amazon.com/codedeploy/latest/userguide/instances-ec2-create-cloudformation-template.html))
 
-Make sure you are using the key from the `us-west-2` region since `us-west-1` region doesn't support Pipeline yet.
-In my example, my key name is `azat-aws-course-aws-us-west-2.
+SSH Key Pair will allow you to SSH into EC2 instances. You can create a key pair in AWS console or with AWS CLI. Keys are region bound. In other words, key pairs are not shared between regions. (Neither any other EC2 resources by the way. This was done on purpose to make each region autonomous and more resilient to any outages.)
+
+Make sure you are using the key from the `us-west-2` region since `us-west-1` region didn't support Pipeline initially and this tutorial is for `us-west-2` (Oregon). In my example, my key name is `azat-aws-course-us-west-2`. I created it in `us-west-2` with this command and used name `azat-aws-course-us-west-2` to differenciate from my other key `azat-aws-course` in `us-west-1`:
+
+```
+aws ec2 create-key-pair --key-name azat-aws-course-us-west-2
+```
+
+The output is an ASCII version of the private key and key fingerprint. You need to save "KeyMaterial" into to a file with `*.pem` extension, e.g., MyKeyPair.pem. For more information, see [Using Key Pairs](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-keypairs.html) in the AWS Command Line Interface User Guide.
+
+If you created your own SSH key pair in previous labs in `us-west-2`, then substitute the name with your name of the SSH key pair.
+
+
+The following command can be launch froom `code/codedeploy-codepipeline` where I put the CF JSON file `codedeploy-cf-tpm-t2-hvm-3-ec2.json`
 
 ```
 aws cloudformation create-stack \
   --stack-name NodeAppCodeDeployStack \
   --template-body file://codedeploy-cf-tpm-t2-hvm-3-ec2.json \
   --parameters ParameterKey=InstanceCount,ParameterValue=1 ParameterKey=InstanceType,ParameterValue=t2.micro \
-    ParameterKey=KeyPairName,ParameterValue=azat-aws-course-aws-us-west-2 \
+    ParameterKey=KeyPairName,ParameterValue=azat-aws-course-us-west-2 \
     ParameterKey=OperatingSystem,ParameterValue=Linux \
     ParameterKey=SSHLocation,ParameterValue=0.0.0.0/0 ParameterKey=TagKey,ParameterValue=Name \
     ParameterKey=TagValue,ParameterValue=NodeAppCodeDeploy \
@@ -73,17 +87,24 @@ You can get the current info about the stack, its status and its creation progre
 aws cloudformation describe-stacks
 ```
 
+It will take a few minutes for AWS to create the stack. Please be patient. You can get a cup of coffee or tea while you wait.
+
 You can monitor progress and debug any issues at the web console as well: <https://us-west-2.console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks>.
 
 ```
 aws cloudformation wait stack-create-complete --stack-name NodeAppCodeDeployStack
 ```
 
+If you made a mistake like using the wrong or nonexistent key pair name, then you'll see `ROLLBACK_COMPLETED` which means there's an error and the entire stack was rollback/reverted to the original state. You will need to remove/delete the stack or using a different stack name for a new create-stack command. To remove/delete stack use `aws cloudformation delete-stack --stack-name NodeAppCodeDeployStack`.
+
 ## 3. Create CodeDeploy
 
 ### 3.1. Create CodeDeploy Service IAM role
 
 There are two things needed: trust policy and managed policy.
+Trust policy is a document in JSON format in which you define who is allowed to assume the role. This trusted entity is included in the policy as the principal element in the document. The document is written according to the rules of the IAM policy language.
+
+You can read more about role terms in [Roles Terms and Concepts](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_terms-and-concepts.html) and the differences in [Managed Policies and Inline Policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html).
 
 Before you create CodeDeploy, it needs IAM role with a special policy. This special policy can be provided in a JSON format (e.g., `codedeploy-role-trust-policy.json`):
 
@@ -140,13 +161,19 @@ Your output will look similar to this *except* for the Arn:
 }
 ```
 
-For the managed policy, use the [attach-role-policy](http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html) command with your newly created role name (e.g., `CodeDeployServiceRole`) and the policy Arn (i.e., `arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole` - **do NOT change Arn**):
+That's not all. We have a role but we need to attach a managed policy to the role.
+
+You can compare roles without (left) and with (right) a managed policy in this AWS Console screenshot:
+
+![](/../images/codedeploy-roles-console.png)
+
+So the next step is to attach the managed policy. Use the [attach-role-policy](http://docs.aws.amazon.com/cli/latest/reference/iam/attach-role-policy.html) command with your newly created role name (e.g., `CodeDeployServiceRole`) and the policy Arn (i.e., `arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole` - **do NOT change Arn**):
 
 ```
 aws iam attach-role-policy --role-name CodeDeployServiceRole --policy-arn arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole
 ```
 
-Verify that the policy has been attached to the role right away:
+To get the Role ID (Arn) the policy has been attached to the role right away:
 
 ```
 aws iam get-role --role-name CodeDeployServiceRole
@@ -160,7 +187,7 @@ aws iam get-role --role-name CodeDeployServiceRole --query "Role.Arn" --output t
 
 Remember your newly created IAM role Arn. You will need it to create deployment group.
 
-My output is:
+My output has my AWS account number in it and looks similar to this:
 
 ```
 arn:aws:iam::161599702702:role/CodeDeployServiceRole
@@ -170,13 +197,15 @@ Save yours!
 
 ## 3.2. Create an application with CodeDeploy
 
-Next, you need to create an application. Run the following:
+Next, you need to create an application. Run the following command:
 
 ```
 aws deploy create-application --application-name Node_App
 ```
 
-Response example:
+More info on the command: <http://docs.aws.amazon.com/cli/latest/reference/deploy/create-application.html>.
+
+The response example is as follows (your ID will be different):
 
 ```
 {
@@ -184,11 +213,20 @@ Response example:
 }
 ```
 
-More info: <http://docs.aws.amazon.com/cli/latest/reference/deploy/create-application.html>
+That's all here.
+
 
 ### 3.3. Create CodeDeploy deployment group
 
-Finally for CodeDeploy, create a deployment group which uses application name and instance tags. In other words, deployment group will link application and instance(s) (which we created with CloudFormation). **Instead of my service role Arn, insert yours from the CodeDeploy service role in step 3.1.** (Hint, those digits in the IAM Arn is your AWS account ID. More details [here](http://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-iam))
+Finally for CodeDeploy, create a deployment group that links application name and instance tags. In other words, deployment group will connect the application `Node_App` (in my examples) and instance(s) that we created with CloudFormation earlier.
+
+Important! **Instead of my service role Arn, insert yours from the CodeDeploy service role in step 3.1.** If you're getting "Cross-account pass role is not allowed." then you didn't provide the correct Arn. (Hint, those digits in the IAM Arn is your AWS account ID. More details [here](http://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-iam)). If you forgot the role Arn, then execute this command first
+
+```
+aws iam get-role --role-name CodeDeployServiceRole --query "Role.Arn" --output text
+```
+
+Then replace the Arn in my example and run `create-deployment-group`:
 
 ```
 aws deploy create-deployment-group --application-name Node_App \
@@ -208,7 +246,6 @@ Your result will have a deploymentGroupId as well:
 }
 ```
 
-
 More info: <http://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-groups-create.html>
 
 ## 4. Create App Repo
@@ -216,9 +253,9 @@ More info: <http://docs.aws.amazon.com/codedeploy/latest/userguide/deployment-gr
 You can use the provided GitHub repository <https://github.com/azat-co/codedeploy-codepipeline-node> which has a Node HTTP server and shell scripts, but if you want to modify the code, then you will need to do:
 
 1. Fork repository to have your own copy which you can modify (commit and push)
-1. Create a new repository from scratch following steps below
+2. Create a new repository from scratch following steps below
 
-Create application code with the following structure
+Create application code with the following structure:
 
 ```
 /scripts
@@ -271,7 +308,7 @@ require('http')
   })
 ```
 
-`scripts/install_dependencies.sh`:
+The shell script file `scripts/install_dependencies.sh` has the following content:
 
 ```
 #!/bin/bash
@@ -285,7 +322,7 @@ yum install -y nodejs
 npm i -g pm2@2.4.3
 ```
 
-`scripts/start_server.sh`:
+The script to start the Node server `scripts/start_server.sh` has these commands:
 
 ```
 #!/bin/bash
@@ -328,7 +365,7 @@ Thus, you have two options:
 
 ### 5.1. CodePipeline via CLI (option A)
 
-Create a bucket to store artifacts for the pipeline. Be careful with the name. It must be globally unique.
+Create a bucket to store artifacts for the pipeline. Be careful with the name. It must be globally unique. If you're getting "The requested bucket name is not available." then change the bucket name (try adding more random numbers and characters).
 
 ```
 aws s3 mb s3://node-app-pipeline-bucket-346128301596 --region us-west-2
@@ -392,7 +429,7 @@ The output will be like this one:
 }
 ```
 
-Now add inline policy (different from trust policy above) from a file:
+Now add the inline policy (different from the trust policy we used before) from a file that I provide in `code`:
 
 ```
 aws iam put-role-policy --role-name CodePipelineServiceRole --policy-name CodePipelineServiceRoleNodeAppPolicy --policy-document file://codepipeline-role-inline-policy.json
@@ -403,7 +440,7 @@ Get GitHub token. You will feed it to AWS CLI. Personal access token will be jus
 
 ![](../images/github-oauth-token.png)
 
-Copy the token. When the GitHub access token exists, add and verify that it has enough permissions. My repo is public so I only have checked the access to `public_repo`, `repo:status` and `repo_deployment` in my GitHub access token's setting. You can copy my settings if your repository is public. 
+Copy the token. When the GitHub access token exists, add and verify that it has enough permissions. My repo is public so I only have checked the access to `public_repo`, `repo:status` and `repo_deployment` in my GitHub access token's setting. You can copy my settings if your repository is public.
 
 Obviously, if your repository is private, you'll need to give access to CodePipeline via the personal access token setting `repo`. See more details about settings (GitHub's OAuth scopes) at [GitHub documentation for OAuth scopes.](https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-scopes-for-oauth-apps)
 
