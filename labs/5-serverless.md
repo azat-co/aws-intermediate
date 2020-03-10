@@ -221,6 +221,53 @@ exports.handler = (event, context, callback) => {
 }
 ```
 
+If you have a missing `dynamodb-doc` error, then try using just `aws-sdk` like this:
+
+```js
+'use strict'
+
+console.log('Loading function')
+const AWS = require('aws-sdk');
+const dynamo = new AWS.DynamoDB.DocumentClient();
+
+// All the request info in event
+// "handler" is defined on the function creation
+exports.handler = (event, context, callback) => {
+
+    // Callback to finish response
+    const done = (err, res) => callback(null, {
+        statusCode: err ? '400' : '200',
+        body: err ? err.message : JSON.stringify(res),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    // To support mock testing, accept object not just strings
+    if (typeof event.body == 'string')
+        event.body = JSON.parse(event.body)
+    switch (event.httpMethod) {
+        // Table name and key are in payload
+        case 'DELETE':
+            dynamo.delete(event.body, done)
+            break
+        // No payload, just a query string param
+        case 'GET':
+            dynamo.scan({ TableName: event.queryStringParameters.TableName }, done)
+            break
+        // Table name and key are in payload
+        case 'POST':
+            dynamo.put(event.body, done)
+            break
+        // Table name and key are in payload
+        case 'PUT':
+            dynamo.update(event.body, done)
+            break
+        default:
+            done(new Error(`Unsupported method "${event.httpMethod}"`))
+    }
+}
+```
+
 So either copy or type the code into a file and archive it with ZIP into `db-api.zip`... or use my file located in `code/serverless
 
 Now we can create an AWS Lambda function from the source code. **Use your IAM role Arn from the IAM step.** The code for the function will come from a zip file. The handle is the name of the method in `index.js` for AWS to import and invoke.
