@@ -9,7 +9,7 @@
   "author": "Azat Mardan",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "2.41.0"
+    "aws-sdk": "2.1693.0"
   },
   "description": ""
 }
